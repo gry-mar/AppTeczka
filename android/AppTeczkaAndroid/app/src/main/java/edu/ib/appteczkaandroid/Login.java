@@ -3,6 +3,11 @@ package edu.ib.appteczkaandroid;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -18,6 +23,10 @@ import com.google.firebase.auth.UserInfo;
 
 import java.util.HashMap;
 import java.util.Map;
+<<<<<<< Updated upstream
+=======
+>>>>>>> devNatalia
+>>>>>>> Stashed changes
 
 public class Login extends AppCompatActivity {
 
@@ -43,8 +52,18 @@ public class Login extends AppCompatActivity {
                 public void onResponse(String response) {
                     Log.d("res", response);
                     if (response.equals("success")) {
+<<<<<<< Updated upstream
                         //UserInfo info = UserInfo.getInstance();
                         //info.setEmail(email);
+=======
+<<<<<<< HEAD
+                        UserInfo info = UserInfo.getInstance();
+                        info.setEmail(email);
+=======
+                        //UserInfo info = UserInfo.getInstance();
+                        //info.setEmail(email);
+>>>>>>> devNatalia
+>>>>>>> Stashed changes
                         //intent na otwarcie nowego okna
                     } else if (response.equals("failure")) {
                         Toast.makeText(getApplicationContext(), "Wrong email/password.", Toast.LENGTH_LONG).show();

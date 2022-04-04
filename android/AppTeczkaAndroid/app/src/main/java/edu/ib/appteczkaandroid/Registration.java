@@ -3,6 +3,11 @@ package edu.ib.appteczkaandroid;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,6 +21,10 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.Map;
+<<<<<<< Updated upstream
+=======
+>>>>>>> devNatalia
+>>>>>>> Stashed changes
 
 public class Registration extends AppCompatActivity {
 
