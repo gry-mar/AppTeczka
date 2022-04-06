@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">AppTeczkaAndroid</string>
+    <string name="sprawd_ze_wszystkimi">Sprawdź ze wszystkimi</string>
+    <string name="por_wnaj_2_leki">Porównaj 2 leki</string>
+    <string name="otw_rz_samouczek">Otwórz samouczek</string>
+    <string name="wyszukaj_po_substancji_aktywnej">Wyszukaj po substancji aktywnej</string>
+    <string name="interakcje_pomi_dzy_lekami">Interakcje pomiędzy lekami</string>
 </resources>
