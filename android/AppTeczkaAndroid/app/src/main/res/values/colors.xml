@@ -4,4 +4,5 @@
     <color name="grey_1">#888888</color>
     <color name="redish">#e88186</color>
     <color name="white">#ffffff</color>
+    <color name="lightGrey">#dddddd</color>
 </resources>

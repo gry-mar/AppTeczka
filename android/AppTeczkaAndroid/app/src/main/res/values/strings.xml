@@ -5,4 +5,7 @@
     <string name="otw_rz_samouczek">Otwórz samouczek</string>
     <string name="wyszukaj_po_substancji_aktywnej">Wyszukaj po substancji aktywnej</string>
     <string name="interakcje_pomi_dzy_lekami">Interakcje pomiędzy lekami</string>
+    <string name="wrowad_nazw_drugiego_leku">Wrowadź nazwę drugiego leku</string>
+    <string name="por_wnaj">Porównaj</string>
+    <string name="wprowad_nazw_pierwszego_leku">Wprowadź nazwę pierwszego leku</string>
 </resources>
