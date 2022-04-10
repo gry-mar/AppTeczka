@@ -1,12 +1,17 @@
 package edu.ib.appteczkaandroid;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Results {
+public class Results implements Serializable {
+    @SerializedName("nlmDisclaimer")
     protected String nlmDisclaimer;
-    protected ArrayList<ArrayList> fullInteractionTypeGroup;
+    @SerializedName("fullInteractionTypeGroup")
+    protected ArrayList<FullInteractionTypeGroup> fullInteractionTypeGroup;
 
-    public Results(String nlmDisclaimer, ArrayList<ArrayList> fullInteractionTypeGroup) {
+    public Results(String nlmDisclaimer, ArrayList<FullInteractionTypeGroup> fullInteractionTypeGroup) {
         this.nlmDisclaimer = nlmDisclaimer;
         this.fullInteractionTypeGroup = fullInteractionTypeGroup;
     }
@@ -22,11 +27,11 @@ public class Results {
         this.nlmDisclaimer = nlmDisclaimer;
     }
 
-    public ArrayList<ArrayList> getFullInteractionTypeGroup() {
+    public ArrayList<FullInteractionTypeGroup> getFullInteractionTypeGroup() {
         return fullInteractionTypeGroup;
     }
 
-    public void setFullInteractionTypeGroup(ArrayList<ArrayList> fullInteractionTypeGroup) {
+    public void setFullInteractionTypeGroup(ArrayList<FullInteractionTypeGroup> fullInteractionTypeGroup) {
         this.fullInteractionTypeGroup = fullInteractionTypeGroup;
     }
 
