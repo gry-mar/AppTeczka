@@ -18,4 +18,9 @@
     <string name="maszJuzKonto">Masz już konto?</string>
     <string name="maszJuzKonto2">Zaloguj się</string>
     <string name="powtorzHaslo">Powtórz hasło</string>
+    <string name="dodajLek">Dodaj nowy lek</string>
+    <string name="usunLek">Usuń zaznaczony lek</string>
+    <string name="rozpDawkowanie">Rozpocznik dawkowanie</string>
+    <string name="nazwaLeku">Nazwa leku</string>
+    <string name="dataWaznosciLeku">Data ważności leku</string>
 </resources>
