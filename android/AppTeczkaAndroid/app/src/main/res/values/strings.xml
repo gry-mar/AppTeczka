@@ -8,4 +8,14 @@
     <string name="wrowad_nazw_drugiego_leku">Wrowadź nazwę drugiego leku</string>
     <string name="por_wnaj">Porównaj</string>
     <string name="wprowad_nazw_pierwszego_leku">Wprowadź nazwę pierwszego leku</string>
+    <string name="wprowadzLogin">Login</string>
+    <string name="wprowadzHaslo">Hasło</string>
+    <string name="zalogujSie">Zaloguj się</string>
+    <string name="niePamietaszHasla">Nie pamiętasz swojego hasła?</string>
+    <string name="przypomnijHaslo">Przypomnij je!</string>
+    <string name="wprowadzEmail">Email</string>
+    <string name="zarejestrujSie">Zarejestruj się</string>
+    <string name="maszJuzKonto">Masz już konto?</string>
+    <string name="maszJuzKonto2">Zaloguj się</string>
+    <string name="powtorzHaslo">Powtórz hasło</string>
 </resources>
