@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -15,26 +18,77 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.util.logging.Logger;
+
 public class RxNormService {
 
-    Context context;
-    TextView textView;
+    protected static String id ="";
+    private Context context;
+    private TextView textView;
 
     public RxNormService(Context context, TextView textView) {
         this.context = context;
         this.textView = textView;
     }
 
-    public String getInteractionsWithTwoDrugs(String firstDrug, String secondDrug){
-        RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "https://rxnav.nlm.nih.gov/REST/interaction/list.json?rxcuis=207106+152923";
-        System.out.println(url);
-        //String resultString = "";
-        //Gson gson = new GsonBuilder().create();
 
-//        JsonObject job = gson.fromJson(url, JsonObject.class);
-//        JsonArray arr = job.getAsJsonObject("results").getAsJsonArray("fullInteractionTypeGroup");
-//        System.out.println(arr);
+
+    public static String getDrugsId(String drugName, Context context, TextView textView){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String urlPart = "https://rxnav.nlm.nih.gov/REST/rxcui.json?name=";
+        StringBuilder sb = new StringBuilder(urlPart);
+        sb.append(drugName);
+        String url = sb.toString();
+        System.out.println(url);
+        String rxNormID = null;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JsonObject results = gson.fromJson(response.toString(), JsonObject.class);
+                        id = "oooo";
+                        try {
+                            JsonObject jakos = results.getAsJsonObject("idGroup");
+
+                            JsonArray jj = jakos.getAsJsonArray("rxnormId");
+                            System.out.println(jj);
+                            JsonElement a = jj.get(0);
+                            id = a.getAsString();
+
+                        }catch(Exception e) {
+                            System.out.println("No such drug");
+                            textView.setText("Nie znaleziono takiego leku");
+
+
+                    }
+
+                }}, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("error");
+            }
+
+        });
+
+        queue.add(stringRequest);
+        System.out.println(id);
+        return id;
+
+    }
+
+    public void getInteractionsWithTwoDrugs(String firstDrug, String secondDrug){
+        String id1 = getDrugsId(firstDrug, context,textView);
+        String id2 = getDrugsId(secondDrug,context, textView);
+        System.out.println(id1);
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String urlPart = "https://rxnav.nlm.nih.gov/REST/interaction/list.json?rxcuis=";
+        StringBuilder sb = new StringBuilder(urlPart);
+        sb.append(id1);
+        sb.append("+");
+        sb.append(id2);
+        String url = sb.toString();
+        System.out.println(url);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 res -> {
@@ -101,7 +155,7 @@ public class RxNormService {
 
         });
         queue.add(stringRequest);
-        return stringRequest.toString();
+//        return stringRequest.toString();
     }
 
 }

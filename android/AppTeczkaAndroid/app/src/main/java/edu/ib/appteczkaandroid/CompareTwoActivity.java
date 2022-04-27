@@ -48,10 +48,8 @@ public class CompareTwoActivity extends AppCompatActivity {
         EditText edtSecond = findViewById(R.id.edtDrug2Name);
         String firstDrug = edtFirst.getText().toString();
         String secondDrug = edtSecond.getText().toString();
-        String url = "https://rxnav.nlm.nih.gov/REST/interaction/list.json?rxcuis=207106+152923";
-        System.out.println(url);
         RxNormService service = new RxNormService(this,tvResult);
-        service.getInteractionsWithTwoDrugs(firstDrug,secondDrug);
+        service.getInteractionsWithTwoDrugs(firstDrug, secondDrug);
 
             }
 }
