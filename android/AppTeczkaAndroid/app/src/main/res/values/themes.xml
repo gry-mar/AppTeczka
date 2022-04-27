@@ -14,4 +14,11 @@
         <!-- Customize your theme here. -->
         <item name="android:textColor">@color/grey_1</item>
     </style>
+    <style name="borderText">
+        <item name="android:textColor">@color/lightGrey</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:shadowColor">@color/redish</item>
+        <item name="android:shadowRadius">15</item>
+
+    </style>
 </resources>

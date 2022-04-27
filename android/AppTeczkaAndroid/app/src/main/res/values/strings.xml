@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">AppTeczkaAndroid</string>
+    <string name="sprawd_ze_wszystkimi">Sprawdź ze wszystkimi</string>
+    <string name="por_wnaj_2_leki">Porównaj 2 leki</string>
+    <string name="otw_rz_samouczek">Otwórz samouczek</string>
+    <string name="wyszukaj_po_substancji_aktywnej">Wyszukaj po substancji aktywnej</string>
+    <string name="interakcje_pomi_dzy_lekami">Interakcje pomiędzy lekami</string>
+    <string name="wrowad_nazw_drugiego_leku">Wrowadź nazwę drugiego leku</string>
+    <string name="por_wnaj">Porównaj</string>
+    <string name="wprowad_nazw_pierwszego_leku">Wprowadź nazwę pierwszego leku</string>
+    <string name="wprowadzLogin">Login</string>
+    <string name="wprowadzHaslo">Hasło</string>
+    <string name="zalogujSie">Zaloguj się</string>
+    <string name="niePamietaszHasla">Nie pamiętasz swojego hasła?</string>
+    <string name="przypomnijHaslo">Przypomnij je!</string>
+    <string name="wprowadzEmail">Email</string>
+    <string name="zarejestrujSie">Zarejestruj się</string>
+    <string name="maszJuzKonto">Masz już konto?</string>
+    <string name="maszJuzKonto2">Zaloguj się</string>
+    <string name="powtorzHaslo">Powtórz hasło</string>
+    <string name="dodajLek">Dodaj nowy lek</string>
+    <string name="usunLek">Usuń zaznaczony lek</string>
+    <string name="rozpDawkowanie">Rozpocznik dawkowanie</string>
+    <string name="nazwaLeku">Nazwa leku</string>
+    <string name="dataWaznosciLeku">Data ważności leku</string>
 </resources>

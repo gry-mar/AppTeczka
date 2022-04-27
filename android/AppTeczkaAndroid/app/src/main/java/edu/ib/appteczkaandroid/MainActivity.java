@@ -17,7 +17,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnGo(View view) {
-        Intent intent = new Intent(this, PlannerController.class);
+//        Intent intent = new Intent(this, PlannerController.class);
+//        startActivity(intent);
+        Intent intent = new Intent(this,InteractionsActivity.class);
         startActivity(intent);
     }
 }
