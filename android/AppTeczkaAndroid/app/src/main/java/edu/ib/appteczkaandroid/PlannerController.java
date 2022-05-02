@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -20,7 +21,7 @@ import java.util.Arrays;
 
 public class PlannerController extends AppCompatActivity {
 
-    private static final Object PREFS_NAME = "PREFS";
+    private static final String PREFS_NAME = "elements";
     ListView listview;
 
     String[] drugNamesList = new String[]{
@@ -60,22 +61,31 @@ public class PlannerController extends AppCompatActivity {
             switches[position] = switch1;
 
             Toast.makeText(PlannerController.this, switch1 + "  " + position, Toast.LENGTH_SHORT).show();
+            if(customElements != null)
+                customElements.get(position).setChecked(true);
         }
     };
-    private ArrayList<CustomListElement> ItemsFromSharedPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        System.out.println(savedInstanceState);
         setContentView(R.layout.activity_planner);
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-message"));
         listview = findViewById(R.id.listView1);
         ArrayList<String> drugNames = new ArrayList<>(Arrays.asList(drugNamesList));
         ArrayList<String> drugTimes = new ArrayList<>(Arrays.asList(drugTimesList));
-        for (int i = 0; i < drugNamesList.length; i++) {
-            customElements.add(new CustomListElement(drugNames.get(i), drugTimes.get(i), switches[i]));
+        if (savedInstanceState == null) {
+            for (int i = 0; i < drugNamesList.length; i++) {
+                customElements.add(new CustomListElement(drugNames.get(i), drugTimes.get(i), switches[i]));
+            }
+        }else{
+            System.out.println("coś tu jest");
+            String jsonItems = savedInstanceState.getString(PREFS_NAME, null);
+            Gson gson = new Gson();
+            CustomListElement[] favoriteItems = gson.fromJson(jsonItems, CustomListElement[].class);
+            customElements.addAll(Arrays.asList(favoriteItems));
         }
         plannerCustomAdapter = new PlannerCustomAdapter(customElements, PlannerController.this);
 
@@ -84,57 +94,84 @@ public class PlannerController extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        /*SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         Gson gson = new Gson();
         String ItemsJson = gson.toJson(customElements);
-        editor.putString("elements", ItemsJson);
-        editor.apply();
+        editor.putString(PREFS_NAME, ItemsJson);
+        editor.apply();*/
+        Gson gson = new Gson();
+        String ItemsJson = gson.toJson(customElements);
         System.out.println(customElements);
         System.out.println(Arrays.toString(switches));
+        outState.putString(PREFS_NAME, ItemsJson);
+        System.out.println(ItemsJson);
+        super.onSaveInstanceState(outState);
+    }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        System.out.println("LalalalaRESTORE");
+        String jsonItems = savedInstanceState.getString(PREFS_NAME, null);
+        Gson gson = new Gson();
+        CustomListElement[] favoriteItems = gson.fromJson(jsonItems, CustomListElement[].class);
+        customElements.addAll(Arrays.asList(favoriteItems));
+        System.out.println(customElements);
+        plannerCustomAdapter = new PlannerCustomAdapter(customElements, PlannerController.this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        /*SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         System.out.println("LalalalaRESUME");
         System.out.println(Arrays.toString(switches));
-        if (sharedPref.contains("elements")) {
-            String jsonItems = sharedPref.getString("elements", null);
+        if (sharedPref.contains(PREFS_NAME)) {
+            String jsonItems = sharedPref.getString(PREFS_NAME, null);
             Gson gson = new Gson();
             CustomListElement[] favoriteItems = gson.fromJson(jsonItems, CustomListElement[].class);
             customElements.addAll(Arrays.asList(favoriteItems));
             ItemsFromSharedPrefs = new ArrayList<>(customElements);
             System.out.println(ItemsFromSharedPrefs);
             plannerCustomAdapter = new PlannerCustomAdapter(ItemsFromSharedPrefs, PlannerController.this);
-        }
+        } */
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        /*
         System.out.println(customElements);
         System.out.println(Arrays.toString(switches));
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         System.out.println("LalalalaSTART");
+        if (sharedPref.contains(PREFS_NAME)) {
+            String jsonItems = sharedPref.getString(PREFS_NAME, null);
+            Gson gson = new Gson();
+            CustomListElement[] favoriteItems = gson.fromJson(jsonItems, CustomListElement[].class);
+            customElements.addAll(Arrays.asList(favoriteItems));
+            ItemsFromSharedPrefs = new ArrayList<>(customElements);
+            System.out.println(ItemsFromSharedPrefs);
+            plannerCustomAdapter = new PlannerCustomAdapter(ItemsFromSharedPrefs, PlannerController.this);
+
+
+        }*/
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        /*
         System.out.println(customElements);
         System.out.println(Arrays.toString(switches));
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         Gson gson = new Gson();
         String ItemsJson = gson.toJson(customElements);
-        editor.putString("elements", ItemsJson);
+        editor.putString(PREFS_NAME, ItemsJson);
         editor.apply();
-        System.out.println("LalalalaSTOP");
+        System.out.println("LalalalaSTOP");*/
     }
 
     @Override
