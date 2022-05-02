@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1047242585476",
+    "project_id": "appteczka-b1cc3",
+    "storage_bucket": "appteczka-b1cc3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047242585476:android:075b2100490f58441699d1",
+        "android_client_info": {
+          "package_name": "edu.ib.appteczkaandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1047242585476-b0elo8f8bbtla1t18v2fbepm9amsd5qf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOobJYSypeo9e6IdBaeytiFdc7mUgNhRc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1047242585476-b0elo8f8bbtla1t18v2fbepm9amsd5qf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

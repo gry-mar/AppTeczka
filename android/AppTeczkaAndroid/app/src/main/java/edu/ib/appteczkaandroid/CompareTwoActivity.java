@@ -2,8 +2,10 @@ package edu.ib.appteczkaandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -36,6 +38,7 @@ public class CompareTwoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare_two);
+
     }
 
     public void btnReturnOnClick(View view) {
@@ -48,8 +51,33 @@ public class CompareTwoActivity extends AppCompatActivity {
         EditText edtSecond = findViewById(R.id.edtDrug2Name);
         String firstDrug = edtFirst.getText().toString();
         String secondDrug = edtSecond.getText().toString();
-        RxNormService service = new RxNormService(this,tvResult);
-        service.getInteractionsWithTwoDrugs(firstDrug, secondDrug);
+        RxNormService service = new RxNormService(this, tvResult);
+        final Handler handler = new Handler(Looper.getMainLooper());
+        final Context context = getApplicationContext();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                RxNormService service1 = new RxNormService(CompareTwoActivity.this, tvResult);
+                service.getDrugsId(firstDrug, CompareTwoActivity.this);
+                String first = RxNormService.id;
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        RxNormService service2 = new RxNormService(CompareTwoActivity.this, tvResult);
+                        service.getDrugsId(secondDrug, CompareTwoActivity.this);
+                        String second = RxNormService.id;
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                service.getInteractionsWithTwoDrugs(first, second);
+                            }
+                        }, 1000);
+                    }
+                }, 1000);
 
             }
+        });
+    }
+
+
 }

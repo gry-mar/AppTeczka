@@ -3,6 +3,8 @@ package edu.ib.appteczkaandroid;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,9 +24,18 @@ import java.util.logging.Logger;
 
 public class RxNormService {
 
-    protected static String id ="";
+    //protected static String id ="";
     private Context context;
     private TextView textView;
+    public static String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public RxNormService(Context context, TextView textView) {
         this.context = context;
@@ -33,7 +44,7 @@ public class RxNormService {
 
 
 
-    public static String getDrugsId(String drugName, Context context, TextView textView){
+    public void getDrugsId(String drugName, Context context){
         RequestQueue queue = Volley.newRequestQueue(context);
         String urlPart = "https://rxnav.nlm.nih.gov/REST/rxcui.json?name=";
         StringBuilder sb = new StringBuilder(urlPart);
@@ -47,14 +58,18 @@ public class RxNormService {
                     @Override
                     public void onResponse(String response) {
                         JsonObject results = gson.fromJson(response.toString(), JsonObject.class);
-                        id = "oooo";
+                        //Bundle bundle = new Bundle();
                         try {
                             JsonObject jakos = results.getAsJsonObject("idGroup");
 
                             JsonArray jj = jakos.getAsJsonArray("rxnormId");
                             System.out.println(jj);
                             JsonElement a = jj.get(0);
-                            id = a.getAsString();
+                             id = a.getAsString();
+                             //Intent i = new Intent(context,CompareTwoActivity.class);
+                             //bundle.putString("DRUG_ID", id);
+
+
 
                         }catch(Exception e) {
                             System.out.println("No such drug");
@@ -72,21 +87,25 @@ public class RxNormService {
         });
 
         queue.add(stringRequest);
-        System.out.println(id);
-        return id;
+        //System.out.println(id);
+
 
     }
 
+    public String returnData(String data){
+        return data;
+    }
+
     public void getInteractionsWithTwoDrugs(String firstDrug, String secondDrug){
-        String id1 = getDrugsId(firstDrug, context,textView);
-        String id2 = getDrugsId(secondDrug,context, textView);
-        System.out.println(id1);
+
+        System.out.println(firstDrug);
+        System.out.println(secondDrug);
         RequestQueue queue = Volley.newRequestQueue(context);
         String urlPart = "https://rxnav.nlm.nih.gov/REST/interaction/list.json?rxcuis=";
         StringBuilder sb = new StringBuilder(urlPart);
-        sb.append(id1);
+        sb.append(firstDrug);
         sb.append("+");
-        sb.append(id2);
+        sb.append(secondDrug);
         String url = sb.toString();
         System.out.println(url);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
