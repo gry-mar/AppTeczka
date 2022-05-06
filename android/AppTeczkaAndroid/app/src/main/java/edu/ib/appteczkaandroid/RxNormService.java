@@ -1,12 +1,7 @@
 package edu.ib.appteczkaandroid;
 
-import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,31 +15,20 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.util.logging.Logger;
+
 
 public class RxNormService {
 
-    //protected static String id ="";
     private Context context;
-    private TextView textView;
-    public static String id;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public RxNormService(Context context, TextView textView) {
+    public RxNormService(Context context) {
         this.context = context;
-        this.textView = textView;
+
     }
 
 
 
-    public void getDrugsId(String drugName, Context context){
+    public void getDrugsId(String drugName, Context context, IOnStringResponse onResponse, int reqId){
         RequestQueue queue = Volley.newRequestQueue(context);
         String urlPart = "https://rxnav.nlm.nih.gov/REST/rxcui.json?name=";
         StringBuilder sb = new StringBuilder(urlPart);
@@ -58,22 +42,17 @@ public class RxNormService {
                     @Override
                     public void onResponse(String response) {
                         JsonObject results = gson.fromJson(response.toString(), JsonObject.class);
-                        //Bundle bundle = new Bundle();
                         try {
                             JsonObject jakos = results.getAsJsonObject("idGroup");
 
                             JsonArray jj = jakos.getAsJsonArray("rxnormId");
                             System.out.println(jj);
                             JsonElement a = jj.get(0);
-                             id = a.getAsString();
-                             //Intent i = new Intent(context,CompareTwoActivity.class);
-                             //bundle.putString("DRUG_ID", id);
-
-
+                            onResponse.onResponse(a.getAsString(), reqId, true);
 
                         }catch(Exception e) {
                             System.out.println("No such drug");
-                            textView.setText("Nie znaleziono takiego leku");
+                            onResponse.onResponse(e.getMessage(), reqId, false);
 
 
                     }
@@ -87,16 +66,12 @@ public class RxNormService {
         });
 
         queue.add(stringRequest);
-        //System.out.println(id);
 
 
     }
 
-    public String returnData(String data){
-        return data;
-    }
 
-    public void getInteractionsWithTwoDrugs(String firstDrug, String secondDrug){
+    public void getInteractionsWithTwoDrugs(String firstDrug, String secondDrug, IOnInteractionsGet interactionsGet){
 
         System.out.println(firstDrug);
         System.out.println(secondDrug);
@@ -114,7 +89,6 @@ public class RxNormService {
                     JsonObject results = gson.fromJson(res.toString(), JsonObject.class);
 
                     try {
-                        //LinkedTreeMap<String, Object>k =((ArrayList<LinkedTreeMap<String, Object>>) results.get("fullInteractionTypeGroup")).get(0);
                         JsonArray jakos =   results.getAsJsonArray("fullInteractionTypeGroup");
                         System.out.println(jakos.toString());
                         JsonObject j = jakos.get(0).getAsJsonObject();
@@ -126,47 +100,11 @@ public class RxNormService {
                         JsonArray interactionPair = jjj.getAsJsonArray("interactionPair");
                         JsonObject interactionPairObject = interactionPair.get(0).getAsJsonObject();
                         JsonElement description = interactionPairObject.get("description");
-                        textView.setText(description.toString());
-
-                        // System.out.println(jj.toString());
-//                                  JsonArray i = j.get(2).getAsJsonArray();
-//                                System.out.println(i.toString());
-//                                  JsonArray h = i.get(2).getAsJsonArray();
-//                                System.out.println(h.toString());
-//                                  JsonObject g = h.get(3).getAsJsonObject();
-//                                  String desc = g.toString();
-//                                System.out.println(desc);
-//                                HashMap<String,Object> lvl1 =  results.get("fullInteractionTypeGroup").get(0);
-//                                 lvl2 = (LinkedTreeMap<String, Object>) lvl1.get("fullInteractionType");
-//                                Type type = new TypeToken<Map<String, Object>>(){}.getType();
-//                                Map<String, Object> myMap = gson.fromJson(String.valueOf(lvl1), type);
-                        //HashMap<String, Object> lvl2 = (HashMap<String, Object>) lvl1.get("fullInteractionType");
-//                                for(String key: lvl1.keySet()){
-//                                    System.out.println(key);
-//                                }
-
-                        //ArrayList<LinkedTreeMap<String, Object>> dd = (ArrayList<LinkedTreeMap<String, Object>>) k.get("fullInteractionType");
-//                                LinkedTreeMap<String, Object> o = (LinkedTreeMap<String, Object>) dd.get(0);
-//                                ArrayList<LinkedTreeMap<String, Object>> o2 = (ArrayList<LinkedTreeMap<String, Object>>) o.get("interactionPair");
-//                                LinkedTreeMap<String, Object> o3 = (LinkedTreeMap<String, Object>) o2.get(0);
-//                                Object descr = o3.get("description");
-//                                System.out.println(descr);
-//                                tvResult.setText(descr.toString());
-//                                for(LinkedTreeMap<String, Object> item : o){
-//                                    String de = (String) item.get("description");
-//                                    System.out.println(item.keySet());
-//                                }
-                        //System.out.println(dd.getClass());
-                        //System.out.println(lvl1.get("fullInteractionType"));
-                        //System.out.println(lvl1.getClass());
-
-
-
-
+                        interactionsGet.onInteractions(description.toString(),firstDrug,secondDrug,true);
 
                     } catch (Exception e) {
                         System.out.println("No description");
-                        textView.setText("Nie znaleziono interakcji, sprawdź poprawnie nazwy leków lub skorzystaj z samouczka");
+                        interactionsGet.onInteractions(e.getMessage(),firstDrug,secondDrug,false);
 
                     }
                 }, error -> {
@@ -174,7 +112,6 @@ public class RxNormService {
 
         });
         queue.add(stringRequest);
-//        return stringRequest.toString();
     }
 
 }

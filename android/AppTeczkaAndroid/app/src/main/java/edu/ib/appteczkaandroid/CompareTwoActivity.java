@@ -2,42 +2,29 @@ package edu.ib.appteczkaandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
+
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.internal.LinkedTreeMap;
-import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 
 
 public class CompareTwoActivity extends AppCompatActivity {
+
+    HashMap<Integer, String> drugMap = new HashMap<>();
+    private int drugCount;
+    private TextView tvResult;
+    private RxNormService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare_two);
+        tvResult = findViewById(R.id.tvResult);
+        service = new RxNormService(this);
 
     }
 
@@ -45,38 +32,38 @@ public class CompareTwoActivity extends AppCompatActivity {
         finish();
     }
 
+    private void onDrugCompare(String response, String idFirst, String idSecond, boolean isSuccess){
+        if(!isSuccess){
+            tvResult.setText("Nie znaleziono interakcji");
+        }else{
+            tvResult.setText(response);
+        }
+
+
+    }
+
+    private void onDrugIdGet(String id, int reqId, boolean isSuccess){
+        if(!isSuccess){
+           tvResult.setText("Nie znaleziono takiego leku, sprawdź czy został wpisany poprawnie");
+        }
+        drugMap.put(reqId, id);
+        if(drugMap.size()==2){
+            String first = drugMap.get(0);
+            String second = drugMap.get(1);
+            service.getInteractionsWithTwoDrugs(first,second,this::onDrugCompare);
+
+        }
+
+    }
+
     public void compareTwoClicked(View view) {
-        TextView tvResult = findViewById(R.id.tvResult);
         EditText edtFirst = findViewById(R.id.edtDrug1Name);
         EditText edtSecond = findViewById(R.id.edtDrug2Name);
         String firstDrug = edtFirst.getText().toString();
         String secondDrug = edtSecond.getText().toString();
-        RxNormService service = new RxNormService(this, tvResult);
-        final Handler handler = new Handler(Looper.getMainLooper());
-        final Context context = getApplicationContext();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                RxNormService service1 = new RxNormService(CompareTwoActivity.this, tvResult);
-                service.getDrugsId(firstDrug, CompareTwoActivity.this);
-                String first = RxNormService.id;
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        RxNormService service2 = new RxNormService(CompareTwoActivity.this, tvResult);
-                        service.getDrugsId(secondDrug, CompareTwoActivity.this);
-                        String second = RxNormService.id;
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                service.getInteractionsWithTwoDrugs(first, second);
-                            }
-                        }, 1000);
-                    }
-                }, 1000);
+        service.getDrugsId(firstDrug, this,this::onDrugIdGet, 0);
+        service.getDrugsId(secondDrug, this,this::onDrugIdGet, 1);
 
-            }
-        });
     }
 
 
