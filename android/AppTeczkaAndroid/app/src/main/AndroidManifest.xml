@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppTeczkaAndroid">
         <activity
+            android:name=".LearningPanelActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddDrugToAll"
+            android:exported="false" />
+        <activity
+            android:name=".AllDrugs"
+            android:exported="false" />
+        <activity
             android:name=".CompareTwoActivity"
             android:exported="false" />
         <activity

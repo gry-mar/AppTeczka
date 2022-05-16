@@ -23,4 +23,9 @@ public class InteractionsActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+    public void openLearningPanelClicked(View view) {
+        Intent intent = new Intent(this, LearningPanelActivity.class);
+        startActivity(intent);
+    }
 }
