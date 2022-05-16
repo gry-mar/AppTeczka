@@ -1,9 +1,12 @@
 package edu.ib.appteczkaandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +27,7 @@ public class Login extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
     private TextView tvForgotLogin;
+    private Button btnLogin;
     //W ODPOWIEDNIM FOLDERZE TRZEBA UMIESCIC I ZMIENIC URL
     private String URL = "http://10.0.2.2:80/login/login.php"; //to jest na emulator, jak chcecie testować na kompie, to ip localhosta trzeba zamiast 10.0.2.2
     private String email, password;
@@ -36,6 +40,8 @@ public class Login extends AppCompatActivity {
         etPassword = findViewById(R.id.etPasswordL);
         tvForgotLogin = findViewById(R.id.tvForgotLogin2);
 
+        btnLogin = findViewById(R.id.btnLogin);
+
         email = password = "";
 
         tvForgotLogin.setOnClickListener(new View.OnClickListener(){
@@ -47,9 +53,26 @@ public class Login extends AppCompatActivity {
                 //finish();
             }
         });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MenuAll.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void btnLogin(View view) {
+        //Intent intent = new Intent(getApplicationContext(), .class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //startActivity(intent);
+        //finish();
+    }
+
+    /*public void btnLogin(View view) {
         email = etEmail.getText().toString().trim();
         password = etPassword.getText().toString().trim();
         if (!email.equals("") && !password.equals("")) {
@@ -86,5 +109,5 @@ public class Login extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "Wszystkie pola muszą być wypełnione!", Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
 }
