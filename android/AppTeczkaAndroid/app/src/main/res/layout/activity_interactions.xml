@@ -26,6 +26,7 @@
         android:layout_width="309dp"
         android:layout_height="64dp"
         android:text="@string/sprawd_ze_wszystkimi"
+        android:onClick="onCompareWithAllClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
