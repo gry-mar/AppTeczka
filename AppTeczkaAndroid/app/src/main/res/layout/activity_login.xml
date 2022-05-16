@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@drawable/backgroundimg">
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="140dp"
+        android:text="@string/zalogujSie"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/etEmailL"
+        android:layout_width="220dp"
+        android:layout_height="80dp"
+        android:ems="10"
+        android:hint="@string/wprowadzEmail"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/etPasswordL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.858"
+        android:drawableRight="@drawable/login_email" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="310dp"
+        android:layout_height="99dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.074"
+        app:srcCompat="@drawable/logowanie" />
+
+    <EditText
+        android:id="@+id/etPasswordL"
+        android:layout_width="220dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="80dp"
+        android:ems="10"
+        android:hint="@string/wprowadzHaslo"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:drawableRight="@drawable/login_password"/>
+
+    <TextView
+        android:id="@+id/tvForgotLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/niePamietaszHasla"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
+        app:layout_constraintVertical_bias="0.057" />
+
+    <TextView
+        android:id="@+id/tvForgotLogin2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/przypomnijHaslo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvForgotLogin"
+        app:layout_constraintVertical_bias="0.073" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@drawable/backgroundimg">
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="331dp"
+        android:layout_height="125dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.072"
+        app:srcCompat="@drawable/rejestracja" />
+
+    <EditText
+        android:id="@+id/etEmailR"
+        android:layout_width="220dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="204dp"
+        android:drawableRight="@drawable/login_email"
+        android:ems="10"
+        android:hint="@string/wprowadzEmail"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etPasswordR1"
+        android:layout_width="220dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="8dp"
+        android:drawableRight="@drawable/login_password"
+        android:ems="10"
+        android:hint="@string/wprowadzHaslo"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etEmailR" />
+
+    <EditText
+        android:id="@+id/etPasswordR2"
+        android:layout_width="220dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="8dp"
+        android:drawableRight="@drawable/login_password"
+        android:ems="10"
+        android:hint="@string/powtorzHaslo"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPasswordR1" />
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="170dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/zarejestrujSie"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPasswordR2" />
+
+    <TextView
+        android:id="@+id/tvHaveAcc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/maszJuzKonto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
+
+    <TextView
+        android:id="@+id/tvHaveAcc2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/maszJuzKonto2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHaveAcc"
+        app:layout_constraintVertical_bias="0.142" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
