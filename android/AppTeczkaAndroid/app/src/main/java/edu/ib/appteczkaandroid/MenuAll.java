@@ -36,7 +36,7 @@ public class MenuAll extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), PlannerController.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                finish();
+
             }
         });
 
@@ -46,7 +46,7 @@ public class MenuAll extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), InteractionsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                finish();
+
             }
         });
     }

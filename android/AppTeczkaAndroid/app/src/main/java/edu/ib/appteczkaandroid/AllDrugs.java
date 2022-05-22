@@ -168,4 +168,10 @@ public class AllDrugs extends AppCompatActivity {
         //żeby sie od nwoa te leki ladowały już bez tego usuniętego
 
     }
+
+    public void returnClicked(View view) {
+        Intent intent = new Intent(this, MenuAll.class);
+        startActivity(intent);
+        finish();
+    }
 }

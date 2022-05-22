@@ -26,6 +26,8 @@ public class InteractionsActivity extends AppCompatActivity {
     }
 
     public void btnReturnOnClick(View view) {
+        Intent intent = new Intent(this, MenuAll.class);
+        startActivity(intent);
         finish();
     }
 

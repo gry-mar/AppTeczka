@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -89,7 +90,7 @@ public class DosageActivity extends AppCompatActivity {
                     data.put(String.valueOf(drugId),drugInfo);
 
 
-                    db.collection("useremail@gmail.com").document("lekiNaDzien").set(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    db.collection("useremail@gmail.com").document("lekiNaDzien").set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful())
@@ -109,5 +110,9 @@ public class DosageActivity extends AppCompatActivity {
     }
 
 
-
+    public void returnClicked(View view) {
+        Intent intent = new Intent(this, AllDrugs.class);
+        startActivity(intent);
+        finish();
+    }
 }

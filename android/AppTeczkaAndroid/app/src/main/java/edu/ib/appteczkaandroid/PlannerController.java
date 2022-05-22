@@ -126,8 +126,9 @@ public class PlannerController extends AppCompatActivity {
     }
 
     public void btnReturnOnClick(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MenuAll.class);
         startActivity(intent);
+        finish();
     }
 
 }

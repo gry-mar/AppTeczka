@@ -57,10 +57,14 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(etEmail.getText().toString().equals("") || etPassword.getText()==null){
+                    Toast.makeText(getApplicationContext(),"Wprowadź dane", Toast.LENGTH_SHORT).show();
+                }
+                else{
                 Intent intent = new Intent(getApplicationContext(), MenuAll.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                finish();
+                finish();}
             }
         });
     }

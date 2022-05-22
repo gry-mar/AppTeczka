@@ -12,6 +12,7 @@
         android:id="@+id/btnReturn"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:onClick="returnClicked"
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
