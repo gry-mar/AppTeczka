@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppTeczkaAndroid">
         <activity
+            android:name=".DosageActivity"
+            android:exported="false" />
+        <activity
             android:name=".MenuAll"
             android:exported="false" />
         <activity

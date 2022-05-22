@@ -26,4 +26,9 @@
     <string name="drugName">Podaj nazwę leku</string>
     <string name="drugDateExp">Podaj datę ważności leku</string>
     <string name="dodajLek2">Dodaj lek</string>
+    <string name="iloscDawek">Wpisz dzienną ilość dawek leku</string>
+    <string name="dataKoncaDawkowania">Wpisz datę końcową dawkowania</string>
+    <string name="startDosage">Dawkuj</string>
+    <string name="dodajNazweWlasna">Zmień nazwę leku na własną*</string>
+    <string name="toopcjonalne">*Nie jest to wymagane pole.</string>
 </resources>
