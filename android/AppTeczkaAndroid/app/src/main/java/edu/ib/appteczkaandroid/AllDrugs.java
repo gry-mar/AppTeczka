@@ -44,11 +44,11 @@ public class AllDrugs extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_drugs);
-        lek1 = "Lek1";
-        lek2 = "Lek2";
+        lek1 = "Simvastatin";
+        lek2 = "Lisinopril";
         data1 = "06-06-2026";
         data2 = "08-08-2028";
-        lek3 = "Lek3";
+        lek3 = "Losartan";
         data3 = "04-04-2024";
         state = 0;
 

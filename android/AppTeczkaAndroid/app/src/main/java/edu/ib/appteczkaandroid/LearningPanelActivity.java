@@ -4,13 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 public class LearningPanelActivity extends AppCompatActivity {
+
+    private TextView tv1,tv2,tv3, tv4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learning_panel);
+        tv1 = findViewById(R.id.firstPoint);
+        tv1.setText("1. Przejdź do początku ulotki");
+        tv2 = findViewById(R.id.secondPoint);
+        tv2.setText("2. Znajdź napis na górze strony: Ulotka dla pacjenta/ dołączona do opakowania"+
+                ": informacja dla użytkownika");
+        tv3 = findViewById(R.id.thirdPoint);
+        tv3.setText("3. Znajdź nazwę leku, powinna być zaznaczona widocznie większą/ pogrubioną czcionką");
+        tv4 = findViewById(R.id.fourPoint);
+        tv4.setText("4. Nazwa substancji aktywnej powinna znajdować się pomiędzy tekstami z punktu 2 i 3");
     }
 
     public void btnReturnOnClick(View view) {

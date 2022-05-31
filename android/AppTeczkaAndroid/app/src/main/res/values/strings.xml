@@ -31,7 +31,9 @@
     <string name="startDosage">Dawkuj</string>
     <string name="dodajNazweWlasna">Zmień nazwę leku na własną*</string>
     <string name="toopcjonalne">*Nie jest to wymagane pole.</string>
-     <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nr">Nr</string>
+    <string name="interakcje">Interakcje</string>
 
 </resources>
