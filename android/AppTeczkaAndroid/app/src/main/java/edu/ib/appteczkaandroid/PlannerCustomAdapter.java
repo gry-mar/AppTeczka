@@ -57,8 +57,8 @@ public class PlannerCustomAdapter extends BaseAdapter implements ListAdapter {
         }
         ToggleButton callbtn = view.findViewById(R.id.btn);
 
-        TextView drugName = (TextView) view.findViewById(R.id.drugName);
-        drugName.setText(customElements.get(position).getDrugName());
+        TextView drugName = (TextView) view.findViewById(R.id.name);
+        drugName.setText(customElements.get(position).getName());
         TextView drugTime = (TextView) view.findViewById(R.id.drugTime);
         drugTime.setText(customElements.get(position).getTime());
 
@@ -68,7 +68,6 @@ public class PlannerCustomAdapter extends BaseAdapter implements ListAdapter {
             customElements.get(position).setChecked(isChecked);
 
             Intent intent = new Intent("custom-message");
-            //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
             intent.putExtra("switchBooleans", customElements.get(position).isChecked());
             intent.putExtra("switchPositions", position);
             LocalBroadcastManager.getInstance(context).sendBroadcast(intent);

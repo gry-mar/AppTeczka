@@ -12,11 +12,11 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.mlkit.common.model.DownloadConditions;
-import com.google.mlkit.nl.translate.TranslateLanguage;
-import com.google.mlkit.nl.translate.Translation;
-import com.google.mlkit.nl.translate.Translator;
-import com.google.mlkit.nl.translate.TranslatorOptions;
+//import com.google.mlkit.common.model.DownloadConditions;
+//import com.google.mlkit.nl.translate.TranslateLanguage;
+//import com.google.mlkit.nl.translate.Translation;
+//import com.google.mlkit.nl.translate.Translator;
+//import com.google.mlkit.nl.translate.TranslatorOptions;
 
 import java.util.HashMap;
 
