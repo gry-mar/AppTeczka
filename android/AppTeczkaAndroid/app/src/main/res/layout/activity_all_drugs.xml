@@ -50,35 +50,6 @@
             android:gravity="center"
             android:textColor="@color/white"/>
     </TableRow>
-        <TableRow android:background="@color/grey_2" android:padding="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="LEK1"
-                android:gravity="center"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="09-11-2025"
-                android:gravity="center"/>
-        </TableRow>
-        <TableRow android:background="@color/grey_2" android:padding="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="LEK2"
-                android:gravity="center"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="27-03-2028"
-                android:gravity="center"/>
-        </TableRow>
-
     </TableLayout>
 
     <Button
