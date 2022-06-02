@@ -15,6 +15,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 
 
 public class RxNormService {
@@ -105,6 +106,59 @@ public class RxNormService {
                     } catch (Exception e) {
                         System.out.println("No description");
                         interactionsGet.onInteractions(e.getMessage(),firstDrug,secondDrug,false);
+
+                    }
+                }, error -> {
+            System.out.println("error");
+
+        });
+        queue.add(stringRequest);
+    }
+
+    public void getInteractionsWithAll(ArrayList<String> drugIds, IOGetAllInteractions ioGetAllInteractions){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String urlPart = "https://rxnav.nlm.nih.gov/REST/interaction/list.json?rxcuis=";
+        StringBuilder sb = new StringBuilder(urlPart);
+        for (int i = 0; i < drugIds.size()-1; i++) {
+            sb.append(drugIds.get(i));
+            sb.append("+");
+
+        }
+        sb.append(drugIds.get(drugIds.size()-1));
+        String url = sb.toString();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                res -> {
+                    JsonObject results = gson.fromJson(res.toString(), JsonObject.class);
+
+                    try {
+
+                        JsonArray jakos =   results.getAsJsonArray("fullInteractionTypeGroup");
+                        System.out.println(jakos.toString());
+                        JsonObject j = jakos.get(0).getAsJsonObject();
+                        System.out.println(j.toString());
+                        JsonArray jj = j.getAsJsonArray("fullInteractionType");
+                        System.out.println(jj);
+                        ArrayList<String> descriptionList = new ArrayList<>();
+                        for (int i = 0; i < jj.size(); i++) {
+                            JsonObject obj = jj.get(i).getAsJsonObject();
+                            System.out.println(i);
+                            JsonArray interactionPair = obj.getAsJsonArray("interactionPair");
+                            JsonObject interactionPairObject = interactionPair.get(0).getAsJsonObject();
+                            JsonElement description = interactionPairObject.get("description");
+                            descriptionList.add(description.toString());
+                            System.out.println(description.toString());
+
+                        }
+
+
+                        ioGetAllInteractions.onAllInteractions(descriptionList,drugIds,true);
+
+                    } catch (Exception e) {
+                        System.out.println("No description");
+                        ArrayList<String> errorList = new ArrayList<>();
+                        errorList.add("error");
+                        ioGetAllInteractions.onAllInteractions(errorList,drugIds,false);
 
                     }
                 }, error -> {

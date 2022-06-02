@@ -48,7 +48,16 @@ public class AllDrugs extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_drugs);
+<<<<<<< HEAD
 
+=======
+        lek1 = "Simvastatin";
+        lek2 = "Lisinopril";
+        data1 = "06-06-2026";
+        data2 = "08-08-2028";
+        lek3 = "Losartan";
+        data3 = "04-04-2024";
+>>>>>>> 4aad605cb522c48c311fdff9f932c76e393acd46
         state = 0;
 
         Button btnRemoveDrug = findViewById(R.id.btnRemoveDrug);
