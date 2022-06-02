@@ -1,5 +1,6 @@
 package edu.ib.appteczkaandroid;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -43,21 +44,13 @@ public class AllDrugs extends AppCompatActivity {
     private int state, rowId, rowIdOld;
     private String chosenName;
     private String chosenDate;
+    private int drugId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_drugs);
-<<<<<<< HEAD
 
-=======
-        lek1 = "Simvastatin";
-        lek2 = "Lisinopril";
-        data1 = "06-06-2026";
-        data2 = "08-08-2028";
-        lek3 = "Losartan";
-        data3 = "04-04-2024";
->>>>>>> 4aad605cb522c48c311fdff9f932c76e393acd46
         state = 0;
 
         Button btnRemoveDrug = findViewById(R.id.btnRemoveDrug);
@@ -94,7 +87,6 @@ public class AllDrugs extends AppCompatActivity {
                     for (Map.Entry<String, String> drugEntry : drug.entrySet() ) {
                         String key = drugEntry.getKey();
                         String value = drugEntry.getValue();
-                        //drugsList.add(d, drugEntry.getValue());
                         final TableRow row = new TableRow(AllDrugs.this);
 
                         TextView tv1 = new TextView(AllDrugs.this);
@@ -174,15 +166,28 @@ public class AllDrugs extends AppCompatActivity {
             public void onClick(View view) {
                 DocumentReference docRef = db.collection("useremail@gmail.com").document("lekiWszystkie");
                 Map<String, Object> updates = new HashMap<>();
-                //PRZEROBIC NAZWY
 
-                Map<String, Object> deleteSong = new HashMap<>();
-                deleteSong.put("Lek2", FieldValue.delete());
+                Map<String, Object> deleteDrug = new HashMap<>();
 
+                deleteDrug.put(String.valueOf(chosenName), FieldValue.delete());
                 FirebaseFirestore.getInstance()
                         .collection("useremail@gmail.com")
                         .document("lekiWszystkie")
-                        .update(deleteSong);
+                        .update(deleteDrug);
+
+                deleteDrug.put(String.valueOf(rowId), FieldValue.delete());
+                FirebaseFirestore.getInstance()
+                        .collection("useremail@gmail.com")
+                        .document("lekiNaDzien")
+                        .update(deleteDrug);
+
+                Intent intent = new Intent(getApplicationContext(), AllDrugs.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+
+                chosenName = "name";
+
             }
         });
     }

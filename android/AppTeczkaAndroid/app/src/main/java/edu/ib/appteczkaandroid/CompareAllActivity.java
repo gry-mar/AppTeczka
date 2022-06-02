@@ -77,7 +77,7 @@ public class CompareAllActivity extends AppCompatActivity {
 
 
     }
-    private void onDrugIdGetter(String id, int reqId, boolean isSuccess){
+    private void onDrugIdGet(String id, int reqId, boolean isSuccess){
         if(!isSuccess){
             System.out.println("Nie znaleziono takiego leku, sprawdź czy został wpisany poprawnie");
             undefined +=1;
@@ -134,7 +134,7 @@ public class CompareAllActivity extends AppCompatActivity {
         drugCount = drugNames.size();
         System.out.println(drugCount);
         for (int i = 0; i < drugCount; i++) {
-            service.getDrugsId(drugNames.get(i),this,this::onDrugIdGetter,i);
+            service.getDrugsId(drugNames.get(i),this,this::onDrugIdGet,i);
         }
 
     }
