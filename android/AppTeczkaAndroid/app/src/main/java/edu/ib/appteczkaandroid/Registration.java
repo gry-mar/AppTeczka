@@ -1,5 +1,6 @@
 package edu.ib.appteczkaandroid;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -24,6 +25,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,10 +38,8 @@ public class Registration extends AppCompatActivity {
 
     private EditText etEmail, etPassword, etPassword2;
     private TextView tvLogin;
-
-    //W ODPOWIEDNIM FOLDERZE TRZEBA UMIESCIC I ZMIENIC URL
-    private String URL = "http://10.0.2.2:80/login/register.php"; //to jest na emulator, jak chcecie testować na kompie, to ip localhosta trzeba zamiast 10.0.2.2
     private String email, password, password2;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +49,8 @@ public class Registration extends AppCompatActivity {
         etPassword = findViewById(R.id.etPasswordR1);
         etPassword2 = findViewById(R.id.etPasswordR2);
         tvLogin = findViewById(R.id.tvHaveAcc2);
-
-        email = password = password2 = "";
+        mAuth = FirebaseAuth.getInstance();
+        //email = password = password2 = "";
 
         tvLogin.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -61,38 +65,38 @@ public class Registration extends AppCompatActivity {
     
     public void btnRegistration(View view) {
         email = etEmail.getText().toString().trim();
+        FirebaseUser user = mAuth.getCurrentUser();
         password = etPassword.getText().toString().trim();
         password2 = etPassword2.getText().toString().trim();
+        System.out.println(user);
         if(!password.equals(password2)){
             Toast.makeText(getApplicationContext(), "Hasła muszą być takie same!", Toast.LENGTH_LONG).show();
         }
         else if(!email.equals("") && !password.equals("")){
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    if(response.equals("success")){
-                        Toast.makeText(getApplicationContext(), "Rejestracja przebiegła pomyślnie!", Toast.LENGTH_LONG).show();
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(Registration.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(Registration.this, "Rejestracja przebiegła pomyślnie.",
+                                        Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), MenuAll.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                                finish();
+                            }else if(user!=null){
+                                Toast.makeText(Registration.this, "Użytkownik o takim adresie email ma już konto.",
+                                        Toast.LENGTH_SHORT).show();
+                            } else if((password.length()<6) || (password2.length()<6)){
+                                Toast.makeText(Registration.this, "Hasło musi mieć długość co najmniej 6 znaków.",
+                                        Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(Registration.this, "Błąd rejestracji.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
 
-                    }else if(response.equals("failure")){
-                        Toast.makeText(getApplicationContext(), "Coś poszło nie tak. Spróbuj ponownie.", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), error.toString().trim(), Toast.LENGTH_LONG).show();
-                }
-            }){
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> data = new HashMap<>();
-                    data.put("email", email);
-                    data.put("password", password);
-                    return data;
-                }
-            };
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            requestQueue.add(stringRequest);
         }else{
             Toast.makeText(getApplicationContext(), "Wszystkie pola muszą być wypełnione!", Toast.LENGTH_LONG).show();
         }

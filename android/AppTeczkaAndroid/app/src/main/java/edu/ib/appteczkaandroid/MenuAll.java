@@ -20,6 +20,8 @@ public class MenuAll extends AppCompatActivity {
         btnDailyDrugs = findViewById(R.id.btnDailyDrugs);
         btnInteractions = findViewById(R.id.btnInteractions);
 
+
+
         btnAllDrugs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

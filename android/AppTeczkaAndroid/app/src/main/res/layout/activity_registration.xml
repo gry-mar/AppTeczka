@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".Registration"
     android:background="@drawable/backgroundimg">
 
     <EditText
@@ -51,6 +51,7 @@
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="170dp"
+        android:onClick="btnRegistration"
         android:layout_height="70dp"
         android:layout_marginTop="40dp"
         android:text="@string/zarejestrujSie"
