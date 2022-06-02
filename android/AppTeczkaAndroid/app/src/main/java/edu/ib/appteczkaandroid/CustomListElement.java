@@ -11,6 +11,11 @@ public class CustomListElement {
         this.checked = checked;
     }
 
+    public CustomListElement(String name, String time) {
+        this.name = name;
+        this.time = time;
+    }
+
     public String getName() {
         return name;
     }
