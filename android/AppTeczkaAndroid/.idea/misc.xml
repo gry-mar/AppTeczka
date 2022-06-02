@@ -34,7 +34,12 @@
 =======
         <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/layout/custom_listview.xml" value="0.2695035460992908" />
         <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/menu/activity_main_drawer.xml" value="0.39010416666666664" />
+<<<<<<< HEAD
 >>>>>>> 4aad605cb522c48c311fdff9f932c76e393acd46
+=======
+        <entry key="..\:/Users/NATALIA/Desktop/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_planner.xml" value="0.11666666666666667" />
+        <entry key="..\:/Users/NATALIA/Desktop/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/custom_listview.xml" value="0.22" />
+>>>>>>> dev
       </map>
     </option>
   </component>

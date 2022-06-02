@@ -1,34 +1,27 @@
 package edu.ib.appteczkaandroid;
 
-import static java.lang.System.out;
-
-import android.os.Build;
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import androidx.annotation.RequiresApi;
-
-import java.io.IOException;
-import java.io.ObjectStreamException;
-import java.io.Serializable;
-
 public class CustomListElement {
-    private String drugName;
+    private String name;
     private String time;
-    private boolean isChecked;
+    private boolean checked;
 
-    public CustomListElement(String drugName, String time, boolean isChecked) {
-        this.drugName = drugName;
+    public CustomListElement(String name, String time, boolean checked) {
+        this.name = name;
         this.time = time;
-        this.isChecked = isChecked;
+        this.checked = checked;
     }
 
-    public String getDrugName() {
-        return drugName;
+    public CustomListElement(String name, String time) {
+        this.name = name;
+        this.time = time;
     }
 
-    public void setDrugName(String drugName) {
-        this.drugName = drugName;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getTime() {
@@ -40,19 +33,19 @@ public class CustomListElement {
     }
 
     public boolean isChecked() {
-        return isChecked;
+        return checked;
     }
 
     public void setChecked(boolean checked) {
-        isChecked = checked;
+        this.checked = checked;
     }
 
     @Override
     public String toString() {
         return "CustomListElement{" +
-                "drugName='" + drugName + '\'' +
+                "name='" + name + '\'' +
                 ", time='" + time + '\'' +
-                ", isChecked=" + isChecked +
+                ", isChecked=" + checked +
                 '}';
     }
 
