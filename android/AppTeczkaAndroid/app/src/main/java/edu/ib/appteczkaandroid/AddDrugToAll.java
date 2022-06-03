@@ -1,10 +1,18 @@
 package edu.ib.appteczkaandroid;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +30,7 @@ import com.google.protobuf.StringValue;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -121,4 +130,34 @@ public class AddDrugToAll extends AppCompatActivity {
         SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat, Locale.US);
         et.setText(dateFormat.format(calendar.getTime()));
     }
+//    private void scheduleNotification(){
+//        Intent intent  = new Intent(getApplicationContext(),Notify.class);
+//        String title = "hello world";
+//        String message = "Jebac pwr";
+//        intent.putExtra("titleExtra",title);
+//        intent.putExtra("messageExtra", message);
+//
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(),
+//                0,intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//        Date d = new Date();
+//        long milis = d.getTime();
+//
+//
+//
+//    }
+//
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    private void createNotificationChannel(){
+//        CharSequence name = "Default channel";
+//        String desc = "Opis jakis";
+//        String channelID = "1";
+//        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+//        NotificationChannel channel = new NotificationChannel(channelID,name, importance);
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//        notificationManager.createNotificationChannel(channel);
+//    }
+
+
 }

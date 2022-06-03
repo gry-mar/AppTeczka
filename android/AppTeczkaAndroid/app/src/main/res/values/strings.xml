@@ -35,5 +35,10 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nr">Nr</string>
     <string name="interakcje">Interakcje</string>
+    <string-array name="spinner_arr">
+        <item>Raz dziennie</item>
+        <item>Dwa razy dziennie</item>
+        <item>Co godzinę</item>
+    </string-array>
 
 </resources>
