@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -25,16 +27,28 @@ import java.util.Locale;
 import java.util.Map;
 
 public class DosageActivity extends AppCompatActivity {
-    private String name;
-    private String drugDate;
+    private String name, drugDate, emailUser;
     private DrugDosaged drugInfo;
     private int drugId;
     EditText etDosagesPerDay, etDateEnd;
     final Calendar calendar = Calendar.getInstance();
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        emailUser = currentUser.getEmail();
+
+        if(currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+
         setContentView(R.layout.activity_dosage);
         Bundle bundle = getIntent().getExtras();
         name = bundle.getString("name");
@@ -85,7 +99,7 @@ public class DosageActivity extends AppCompatActivity {
                     data.put(String.valueOf(drugId),drugInfo);
 
 
-                    db.collection("useremail@gmail.com").document("lekiNaDzien").set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    db.collection(String.valueOf(emailUser)).document("lekiNaDzien").set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful())
@@ -94,9 +108,14 @@ public class DosageActivity extends AppCompatActivity {
                     });
                 }
 
+                Intent intent = new Intent(getApplicationContext(), PlannerController.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+
             }
         });
-        //drugName.setText(customElements.get(position).getDrugName());
+
     }
     private void updateLabel(EditText et){
         String myFormat="yyyy-MM-dd";

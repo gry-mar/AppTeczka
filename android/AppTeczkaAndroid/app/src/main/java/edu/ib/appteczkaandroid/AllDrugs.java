@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -42,13 +44,26 @@ public class AllDrugs extends AppCompatActivity {
 
     private String drugName, drugExpDate;
     private int state, rowId, rowIdOld;
-    private String chosenName;
-    private String chosenDate;
+    private String chosenName, chosenDate, emailUser;
     private int drugId;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        emailUser = currentUser.getEmail();
+
+        if(currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+
         setContentView(R.layout.activity_all_drugs);
 
         state = 0;
@@ -59,7 +74,7 @@ public class AllDrugs extends AppCompatActivity {
 
         Map<String,String> drug = new HashMap<String,String>();
 
-        db.collection("useremail@gmail.com").document("lekiWszystkie")
+        db.collection(String.valueOf(emailUser)).document("lekiWszystkie")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -111,7 +126,6 @@ public class AllDrugs extends AppCompatActivity {
                                 if(state == 0){
                                     row.setBackgroundColor(Color.parseColor("#adadad"));
                                     state = 1;
-                                    System.out.println("3 " + row.getId());
                                     rowId = row.getId();
                                     rowIdOld = rowId;
 
@@ -123,8 +137,14 @@ public class AllDrugs extends AppCompatActivity {
                                     System.out.println(chosenDate);
 
                                 }else if(state == 1){
-                                    row.setBackgroundColor(Color.TRANSPARENT);
-                                    state = 0;
+                                    if(row.getId() == rowIdOld){
+                                        row.setBackgroundColor(Color.TRANSPARENT);
+                                        state = 0;
+                                    }
+                                    else{
+                                        Toast.makeText(AllDrugs.this,"Nie można równocześnie zaznaczyć " +
+                                                "więcej niż jednego leku.",Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }
                         });
@@ -164,22 +184,27 @@ public class AllDrugs extends AppCompatActivity {
         btnRemoveDrug.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DocumentReference docRef = db.collection("useremail@gmail.com").document("lekiWszystkie");
+                DocumentReference docRef = db.collection(String.valueOf(emailUser)).document("lekiWszystkie");
                 Map<String, Object> updates = new HashMap<>();
 
                 Map<String, Object> deleteDrug = new HashMap<>();
+                Map<String, Object> deleteDrug2 = new HashMap<>();
+
+
 
                 deleteDrug.put(String.valueOf(chosenName), FieldValue.delete());
                 FirebaseFirestore.getInstance()
-                        .collection("useremail@gmail.com")
+                        .collection(String.valueOf(emailUser))
                         .document("lekiWszystkie")
                         .update(deleteDrug);
 
-                deleteDrug.put(String.valueOf(rowId), FieldValue.delete());
+                deleteDrug2.put(String.valueOf(rowId), FieldValue.delete());
                 FirebaseFirestore.getInstance()
-                        .collection("useremail@gmail.com")
+                        .collection(String.valueOf(emailUser))
                         .document("lekiNaDzien")
-                        .update(deleteDrug);
+                        .update(deleteDrug2);
+
+                db.collection(String.valueOf(emailUser)).document("togglebuttons").delete();
 
                 Intent intent = new Intent(getApplicationContext(), AllDrugs.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

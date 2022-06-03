@@ -21,6 +21,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.core.utilities.Tree;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -48,6 +50,11 @@ public class PlannerController extends AppCompatActivity {
     private Map<String, Object> data = new HashMap<>();
     private ArrayList<CustomListElement> customElements = new ArrayList<>();
     private int position = 0;
+
+    private String emailUser;
+
+    private FirebaseAuth mAuth;
+
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -58,7 +65,7 @@ public class PlannerController extends AppCompatActivity {
             customElements.get(position).setChecked(true);
             data.put(String.valueOf(position), customElements.get(position));
 
-            db.collection("useremail@gmail.com").document("lekiPlanner").set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            db.collection(String.valueOf(emailUser)).document("lekiPlanner").set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful())
@@ -72,6 +79,20 @@ public class PlannerController extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        emailUser = currentUser.getEmail();
+
+        System.out.println("gówno" + emailUser);
+
+        if(currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+
         setContentView(R.layout.activity_planner);
 
         listview = findViewById(R.id.listView1);
@@ -82,7 +103,7 @@ public class PlannerController extends AppCompatActivity {
     }
 
     public void getData(){
-        DocumentReference docRef = db.collection("useremail@gmail.com")
+        DocumentReference docRef = db.collection(String.valueOf(emailUser))
                 .document("lekiNaDzien");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @SuppressLint("NewApi")
@@ -158,8 +179,10 @@ public class PlannerController extends AppCompatActivity {
                 }
             }
         }
+        System.out.println("before" + data);
         Map<String, Object> dataSorted = new TreeMap<String,Object>(data);
-        db.collection("useremail@gmail.com").document("lekiPlanner")
+        System.out.println("after" + dataSorted);
+        db.collection(String.valueOf(emailUser)).document("lekiPlanner")
                 .set(dataSorted).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -174,7 +197,7 @@ public class PlannerController extends AppCompatActivity {
     }
 
         private void toggleButtonsGet() {
-            DocumentReference docRef = db.collection("useremail@gmail.com")
+            DocumentReference docRef = db.collection(String.valueOf(emailUser))
                     .document("togglebuttons");
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @SuppressLint("NewApi")
@@ -195,7 +218,7 @@ public class PlannerController extends AppCompatActivity {
                                 //System.out.println("Przy odbieraniu z togglebuttons z firebase: " + customElements);
                                 //data.put(String.valueOf(position), new CustomListElement(customElements.get(position).getName(),
                                 //        customElements.get(position).getTime(), btnValue));
-                                db.collection("useremail@gmail.com")
+                                db.collection(String.valueOf(emailUser))
                                         .document("lekiPlanner")
                                         .update(String.valueOf(position), new CustomListElement(customElements.get(position).getName(),
                                                 customElements.get(position).getTime(), btnValue));
@@ -214,7 +237,7 @@ public class PlannerController extends AppCompatActivity {
             customElements.clear();
 
 
-            DocumentReference docRef2 = db.collection("useremail@gmail.com").document("lekiPlanner");
+            DocumentReference docRef2 = db.collection(String.valueOf(emailUser)).document("lekiPlanner");
             docRef2.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @SuppressLint("NewApi")
                 @RequiresApi(api = Build.VERSION_CODES.N)

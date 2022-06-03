@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.protobuf.StringValue;
@@ -32,18 +34,30 @@ public class AddDrugToAll extends AppCompatActivity {
     private EditText etName, etDate;
 
     private int yearInt, monthInt, dayInt, drugId;
-    private String drugName, drugDate, year, month, day;
+    private String drugName, drugDate, year, month, day, emailUser;
 
     private DrugInAll drugInfo;
 
     private Button btnAddDrug;
     private ImageButton btnBack;
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_drug_to_all);
 
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        emailUser = currentUser.getEmail();
+
+        if(currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
 
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -90,7 +104,7 @@ public class AddDrugToAll extends AppCompatActivity {
                     Map<String, Object> data = new HashMap<>();
                     data.put(drugName, drugDate);
 
-                    db.collection("useremail@gmail.com").document("lekiWszystkie")
+                    db.collection(String.valueOf(emailUser)).document("lekiWszystkie")
                             .set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
