@@ -19,6 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.android.gms.common.util.CollectionUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,11 +34,13 @@ import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -118,11 +121,12 @@ public class PlannerController extends AppCompatActivity {
                         for (Map.Entry<String, Object> entry : dDListSorted.entrySet()) {
                             Object race = entry.getValue();
                             Gson gson = new Gson();
-                            DrugDosaged drugDosaged = gson.fromJson(String.valueOf(race), DrugDosaged.class);
-                            drugsDosaged.add(drugDosaged);
+                                DrugDosaged drugDosaged = gson.fromJson(String.valueOf(race), DrugDosaged.class);
 
-                        }
-                        calculateTime();
+                                drugsDosaged.add(drugDosaged);
+
+                                calculateTime();
+                            }
                     }
                     } else {
                     }
@@ -216,8 +220,8 @@ public class PlannerController extends AppCompatActivity {
                                 int position = Integer.parseInt(entry.getKey());
 
                                 //System.out.println("Przy odbieraniu z togglebuttons z firebase: " + customElements);
-                                //data.put(String.valueOf(position), new CustomListElement(customElements.get(position).getName(),
-                                //        customElements.get(position).getTime(), btnValue));
+                                data.put(String.valueOf(position), new CustomListElement(customElements.get(position).getName(),
+                                        customElements.get(position).getTime(), false));
                                 db.collection(String.valueOf(emailUser))
                                         .document("lekiPlanner")
                                         .update(String.valueOf(position), new CustomListElement(customElements.get(position).getName(),

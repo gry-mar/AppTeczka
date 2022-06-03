@@ -80,7 +80,7 @@ public class Registration extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Toast.makeText(Registration.this, "Rejestracja przebiegła pomyślnie.",
                                         Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), MenuAll.class);
+                                Intent intent = new Intent(getApplicationContext(), Login.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();

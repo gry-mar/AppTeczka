@@ -22,6 +22,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,6 +39,9 @@ import java.util.Objects;
 public class PlannerCustomAdapter extends BaseAdapter implements ListAdapter {
     private final Context context;
     private ArrayList<CustomListElement> customElements;
+    private String emailUser;
+
+    private FirebaseAuth mAuth;
 
     public PlannerCustomAdapter(ArrayList<CustomListElement> customElements,
                                 Context context) {
@@ -62,6 +67,12 @@ public class PlannerCustomAdapter extends BaseAdapter implements ListAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        emailUser = currentUser.getEmail();
+
+        System.out.println("gówno" + emailUser);
+
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -82,7 +93,7 @@ public class PlannerCustomAdapter extends BaseAdapter implements ListAdapter {
                 data.put(String.valueOf(position), b);
                 //btn.setChecked(b);
                 System.out.println("W adapterze przy kliknięciu: " + data.toString());
-                db.collection("useremail@gmail.com").document("togglebuttons")
+                db.collection(String.valueOf(emailUser)).document("togglebuttons")
                         .set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

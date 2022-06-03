@@ -1,10 +1,12 @@
 package edu.ib.appteczkaandroid;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,10 +25,15 @@ import com.google.firebase.firestore.SetOptions;
 import com.google.protobuf.StringValue;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AddDrugToAll extends AppCompatActivity {
 
@@ -83,6 +90,7 @@ public class AddDrugToAll extends AppCompatActivity {
         btnAddDrug = findViewById(R.id.btnAddDrugFinal);
 
         btnAddDrug.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
 
@@ -90,30 +98,64 @@ public class AddDrugToAll extends AppCompatActivity {
                 drugDate = etDate.getText().toString();
 
                 yearInt = calendar.get(Calendar.YEAR);
-                monthInt = calendar.get(Calendar.MONTH)+1;
+                monthInt = calendar.get(Calendar.MONTH) + 1;
                 dayInt = calendar.get(Calendar.DAY_OF_MONTH);
 
                 year = String.valueOf(yearInt);
                 month = String.valueOf(monthInt);
                 day = String.valueOf(dayInt);
-
-                if(etDate.getText().equals("") || etName.getText() ==(null)){
-                    Toast.makeText(AddDrugToAll.this, "Aby dodać lek należy wypełnić wszystkie pola.", Toast.LENGTH_SHORT).show();
-                }else{
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    Map<String, Object> data = new HashMap<>();
-                    data.put(drugName, drugDate);
-
-                    db.collection(String.valueOf(emailUser)).document("lekiWszystkie")
-                            .set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful())
-                                Toast.makeText(AddDrugToAll.this,"Lek został poprawnie dodany",Toast.LENGTH_SHORT).show();
+                int zmiennaRobocza = 0;
+                List<Character> drugNameChars = drugName.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
+                List<Character> specialchars = new ArrayList<>();
+                specialchars.add(('.'));
+                specialchars.add('+');
+                specialchars.add(',');
+                specialchars.add('%');
+                specialchars.add('^');
+                specialchars.add('&');
+                specialchars.add('*');
+                specialchars.add('#');
+                specialchars.add('@');
+                specialchars.add('!');
+                specialchars.add('~');
+                specialchars.add(';');
+                specialchars.add('\n');
+                specialchars.add('/');
+                specialchars.add('`');
+                specialchars.add('|');
+                specialchars.add('{');
+                specialchars.add('}');
+                specialchars.add('-');
+                specialchars.add(':');
+                System.out.println("RACE 2:" + drugNameChars.toString());
+                for (int i = 0; i < drugNameChars.size(); i++) {
+                    for(int j = 0; j < specialchars.size(); j++){
+                        if (drugNameChars.get(i) == (specialchars.get(j))) {
+                            Toast.makeText(AddDrugToAll.this, "Nazwa leku nie może zawierać znaków specjalnych.", Toast.LENGTH_SHORT).show();
+                            zmiennaRobocza = 1;
+                            break;
                         }
-                    });
+                    }
                 }
-            }
+                if (zmiennaRobocza == 0) {
+                    if (etDate.getText().equals("") || etName.getText() == (null)) {
+                        Toast.makeText(AddDrugToAll.this, "Aby dodać lek należy wypełnić wszystkie pola.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        Map<String, Object> data = new HashMap<>();
+                        data.put(drugName, drugDate);
+
+                        db.collection(String.valueOf(emailUser)).document("lekiWszystkie")
+                                .set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful())
+                                    Toast.makeText(AddDrugToAll.this, "Lek został poprawnie dodany", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+        }
         });
 
         btnBack = findViewById(R.id.btnBack);

@@ -55,7 +55,11 @@ public class Login extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        System.out.println("gowienko udalo sie");
+                                        Intent intent = new Intent(getApplicationContext(), MenuAll.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish();
+
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Toast.makeText(Login.this, "Logowanie nie powiodło się.",
