@@ -150,11 +150,13 @@ public class CompareAllActivity extends AppCompatActivity {
     public void onCompareClicked(View view) {
       System.out.println(drugNames.toString());
         drugCount = drugNames.size();
-        System.out.println(drugCount);
-        for (int i = 0; i < drugCount; i++) {
-            service.getDrugsId(drugNames.get(i),this,this::onDrugIdGet,i);
+        if(drugIdList.size() <2){
+            Toast.makeText(this, "Nie znaleziono żadnych leków do porównania interakcji, zachęcamy do zakupu Premium", Toast.LENGTH_LONG).show();
+        }else {
+            for (int i = 0; i < drugCount; i++) {
+                service.getDrugsId(drugNames.get(i), this, this::onDrugIdGet, i);
+            }
         }
-
     }
 
     private void setupList(){

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -90,10 +91,13 @@ public class CompareTwoActivity extends AppCompatActivity {
     public void compareTwoClicked(View view) {
         EditText edtFirst = findViewById(R.id.edtDrug1Name);
         EditText edtSecond = findViewById(R.id.edtDrug2Name);
+        if(edtFirst.getText().toString().equals("") || edtSecond.getText().toString().equals("")){
+            Toast.makeText(this, "Wprowadź nazwy", Toast.LENGTH_SHORT).show();
+        }else{
         String firstDrug = edtFirst.getText().toString();
         String secondDrug = edtSecond.getText().toString();
         service.getDrugsId(firstDrug, this,this::onDrugIdGet, 0);
-        service.getDrugsId(secondDrug, this,this::onDrugIdGet, 1);
+        service.getDrugsId(secondDrug, this,this::onDrugIdGet, 1);}
 
     }
 
