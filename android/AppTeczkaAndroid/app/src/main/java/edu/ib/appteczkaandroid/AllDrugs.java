@@ -1,8 +1,10 @@
 package edu.ib.appteczkaandroid;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,6 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firestore.v1.WriteResult;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,10 +42,11 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 public class AllDrugs extends AppCompatActivity {
 
-    private ArrayList<DrugInAll> drugsList;
+    //private ArrayList<DrugInAll> drugsList;
 
     private String drugName, drugExpDate;
     private int state, rowId, rowIdOld;
@@ -49,6 +54,8 @@ public class AllDrugs extends AppCompatActivity {
     private int drugId;
 
     private FirebaseAuth mAuth;
+
+    ArrayList<DrugInAll> drugsInAll = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,35 +85,56 @@ public class AllDrugs extends AppCompatActivity {
 
         db.collection(String.valueOf(emailUser)).document("lekiWszystkie")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("NewApi")
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     // Document found in the offline cache
                     DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> drugInAllList = document.getData();
+                        Map<String, Object> dAListSorted = new TreeMap<>(drugInAllList);
+                        for (Map.Entry<String, Object> entry : dAListSorted.entrySet()) {
+                            Object race = entry.getValue();
+                            Gson gson = new Gson();
+                            DrugInAll drugInAll= gson.fromJson(String.valueOf(race), DrugInAll.class);
 
-                    ArrayList<Map<String, Object>> drugs = new ArrayList<>();
-                    drugs.add(task.getResult().getData());
-                    System.out.println(drugs);
+                            drugsInAll.add(drugInAll);
 
-                    String[] splitdrugs = drugs.toString().split(",");
-                    if((task.getResult().getData() == null)) {
-                        System.out.println("dupalekkkkk");
-                    }else {
-                        for (int i = 0; i < Objects.requireNonNull(task.getResult().getData()).size(); i++) {
-                            splitdrugs[i] = splitdrugs[i].replace("{", "");
-                            splitdrugs[i] = splitdrugs[i].replace("}", "");
-                            splitdrugs[i] = splitdrugs[i].replace("[", "");
-                            splitdrugs[i] = splitdrugs[i].replace("]", "");
-                            String[] splitOneDrug = splitdrugs[i].split("=");
-                            drug.put(String.valueOf(splitOneDrug[0]), String.valueOf(splitOneDrug[1]));
 
                         }
+                        System.out.println("Leki wszystkie:"+drugsInAll);
+                    }
+                } else {
+                    Toast.makeText(AllDrugs.this,"Wystąpił błąd. Proszę spróbować ponownie.",Toast.LENGTH_SHORT).show();
+                }
+//                    ArrayList<Map<String, Object>> drugs = new ArrayList<>();
+//                    drugs.add(task.getResult().getData());
+//                    System.out.println(drugs);
+
+//                    String[] splitdrugs = drugs.toString().split(",");
+//                    if((task.getResult().getData() == null)) {
+//                        System.out.println("dupalekkkkk");
+//                    }else {
+//                        for (int i = 0; i < Objects.requireNonNull(task.getResult().getData()).size(); i++) {
+//                            splitdrugs[i] = splitdrugs[i].replace("{", "");
+//                            splitdrugs[i] = splitdrugs[i].replace("}", "");
+//                            splitdrugs[i] = splitdrugs[i].replace("[", "");
+//                            splitdrugs[i] = splitdrugs[i].replace("]", "");
+//                            String[] splitOneDrug = splitdrugs[i].split("=");
+//                            drug.put(String.valueOf(splitOneDrug[0]), String.valueOf(splitOneDrug[1]));
+//
+//                        }
 
                         TableLayout table = (TableLayout) AllDrugs.this.findViewById(R.id.tableAllDrugs);
                         int i = 0;
-                        for (Map.Entry<String, String> drugEntry : drug.entrySet()) {
-                            String key = drugEntry.getKey();
-                            String value = drugEntry.getValue();
+                        //for (Map.Entry<String, String> drugEntry : drug.entrySet()) {
+                            for(DrugInAll d:drugsInAll){
+//                            String key = drugEntry.getKey();
+//                            String value = drugEntry.getValue();
+                                String key = d.getName();
+                                String value = d.getDate();
                             final TableRow row = new TableRow(AllDrugs.this);
 
                             TextView tv1 = new TextView(AllDrugs.this);
@@ -181,10 +209,10 @@ public class AllDrugs extends AppCompatActivity {
                     }
 
 
-                } else {
-                    Toast.makeText(AllDrugs.this,"Wystąpił błąd. Proszę spróbować ponownie.",Toast.LENGTH_SHORT).show();
-                }
-            }
+//                } else {
+//                    Toast.makeText(AllDrugs.this,"Wystąpił błąd. Proszę spróbować ponownie.",Toast.LENGTH_SHORT).show();
+//                }
+            //}
         });
         btnRemoveDrug.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,7 +225,8 @@ public class AllDrugs extends AppCompatActivity {
 
 
 
-                deleteDrug.put(String.valueOf(chosenName), FieldValue.delete());
+                //deleteDrug.put(String.valueOf(chosenName), FieldValue.delete());
+                deleteDrug.put(String.valueOf(rowId), FieldValue.delete());
                 FirebaseFirestore.getInstance()
                         .collection(String.valueOf(emailUser))
                         .document("lekiWszystkie")
@@ -224,8 +253,12 @@ public class AllDrugs extends AppCompatActivity {
 
 
     public void btnAddDrug(View view) {
+        int maxPosition = drugsInAll.size();
+        Bundle bundle = new Bundle();
+        bundle.putInt("max",maxPosition);
         Intent intent = new Intent(getApplicationContext(), AddDrugToAll.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtras(bundle);
         startActivity(intent);
         finish();
     }

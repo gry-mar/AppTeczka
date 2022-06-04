@@ -26,8 +26,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.gson.Gson;
 import com.google.protobuf.StringValue;
 
 import java.text.SimpleDateFormat;
@@ -42,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class AddDrugToAll extends AppCompatActivity {
@@ -52,10 +55,13 @@ public class AddDrugToAll extends AppCompatActivity {
     private int yearInt, monthInt, dayInt, drugId;
     private String drugName, drugDate, year, month, day, emailUser;
 
+    private int max;
+
     private DrugInAll drugInfo;
 
     private Button btnAddDrug;
     private ImageButton btnBack;
+    private ArrayList<DrugInAll> drugsInAll= new ArrayList<>();
 
     private FirebaseAuth mAuth;
 
@@ -67,6 +73,9 @@ public class AddDrugToAll extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         emailUser = currentUser.getEmail();
+
+
+
 
         if(currentUser == null){
             Intent intent = new Intent(getApplicationContext(), Login.class);
@@ -102,6 +111,34 @@ public class AddDrugToAll extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection(String.valueOf(emailUser)).document("lekiWszystkie")
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @SuppressLint("NewApi")
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // Document found in the offline cache
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Map<String, Object> drugInAllList = document.getData();
+                                Map<String, Object> dAListSorted = new TreeMap<>(drugInAllList);
+                                for (Map.Entry<String, Object> entry : dAListSorted.entrySet()) {
+                                    Object race = entry.getValue();
+                                    Gson gson = new Gson();
+                                    DrugInAll drugInAll= gson.fromJson(String.valueOf(race), DrugInAll.class);
+
+                                    drugsInAll.add(drugInAll);
+
+
+                                }
+                                max = drugsInAll.size();
+                            }
+                        } else {
+                            max =0;
+                        }}});
 
                 drugName = etName.getText().toString();
                 drugDate = etDate.getText().toString();
@@ -150,9 +187,11 @@ public class AddDrugToAll extends AppCompatActivity {
                     if (etDate.getText().equals("") || etName.getText() == (null)) {
                         Toast.makeText(AddDrugToAll.this, "Aby dodać lek należy wypełnić wszystkie pola.", Toast.LENGTH_SHORT).show();
                     } else {
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        //FirebaseFirestore db = FirebaseFirestore.getInstance();
                         Map<String, Object> data = new HashMap<>();
-                        data.put(drugName, drugDate);
+                        drugInfo = new DrugInAll(drugName,drugDate);
+                        String maxStr = String.valueOf(max);
+                        data.put(maxStr, drugInfo);
 
                         db.collection(String.valueOf(emailUser)).document("lekiWszystkie")
                                 .set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -186,34 +225,7 @@ public class AddDrugToAll extends AppCompatActivity {
         SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat, Locale.US);
         et.setText(dateFormat.format(calendar.getTime()));
     }
-//    private void scheduleNotification(){
-//        Intent intent  = new Intent(getApplicationContext(),Notify.class);
-//        String title = "hello world";
-//        String message = "Jebac pwr";
-//        intent.putExtra("titleExtra",title);
-//        intent.putExtra("messageExtra", message);
-//
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(),
-//                0,intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//        Date d = new Date();
-//        long milis = d.getTime();
-//
-//
-//
-//    }
-//
-//    @RequiresApi(api = Build.VERSION_CODES.O)
-//    private void createNotificationChannel(){
-//        CharSequence name = "Default channel";
-//        String desc = "Opis jakis";
-//        String channelID = "1";
-//        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-//        NotificationChannel channel = new NotificationChannel(channelID,name, importance);
-//        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//        notificationManager.createNotificationChannel(channel);
-//    }
+
 
 
 }
