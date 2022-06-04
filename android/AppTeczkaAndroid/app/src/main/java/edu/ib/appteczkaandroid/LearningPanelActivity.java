@@ -42,7 +42,7 @@ public class LearningPanelActivity extends AppCompatActivity {
         tv3 = findViewById(R.id.thirdPoint);
         tv3.setText("3. Znajdź nazwę leku, powinna być zaznaczona widocznie większą/ pogrubioną czcionką");
         tv4 = findViewById(R.id.fourPoint);
-        tv4.setText("4. Nazwa substancji aktywnej powinna znajdować się pomiędzy tekstami z punktu 2 i 3");
+        tv4.setText("4. Nazwa substancji aktywnej powinna znajdować się w pobliżu tekstów z punktu 2 i 3");
     }
 
     public void btnReturnOnClick(View view) {
