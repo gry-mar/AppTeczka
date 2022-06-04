@@ -24,10 +24,6 @@ public class Notify extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Bundle b = intent.getExtras();
-//        setTitle = intent.getStringExtra("extraTitle");
-//        setMessage = intent.getStringExtra("extraMessage");
-//        NOTIFICATION_ID = intent.getIntExtra("reqCode",100);
 
         PendingIntent pendingIntentResult = PendingIntent.getActivity(
                 context,
@@ -48,14 +44,6 @@ public class Notify extends BroadcastReceiver {
         manager.notify(NOTIFICATION_ID,builder);
         System.out.println(getResultCode());
 
-//        NotificationCompat.Builder builder1 = new NotificationCompat.Builder(context, "default")
-//                .setSmallIcon(R.drawable.logotype)
-//                .setContentTitle("tyt")
-//                .setContentText("2")
-//                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//                .setAutoCancel(true)
-//                .setContentIntent(pendingIntentResult);
-//        manager.notify(101,builder1.build());
 
 
     }
