@@ -1,5 +1,6 @@
 package edu.ib.appteczkaandroid;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,16 +11,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+
+import java.util.Calendar;
 
 import edu.ib.appteczkaandroid.databinding.ActivityMenuAllBinding;
 
 public class MenuAll extends AppCompatActivity {
 
     private Button btnAllDrugs, btnDailyDrugs, btnInteractions;
-    private ActivityMenuAllBinding binding;
 
     private FirebaseAuth mAuth;
 
@@ -84,5 +88,12 @@ public class MenuAll extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), SetReminderActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    public void onLogoutClicked(View view) {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

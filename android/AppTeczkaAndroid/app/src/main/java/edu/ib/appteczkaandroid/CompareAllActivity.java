@@ -81,7 +81,7 @@ public class CompareAllActivity extends AppCompatActivity {
 
         }else{
             if(undefined>0){
-                Toast.makeText(this,"Nie znaleziono wszystkich leków, przedstawione zostaną dostępne", Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"Nie znaleziono wszystkich leków, aby uzyskać dostęp do większej bazy leków zachęcamy do zakupu Premium", Toast.LENGTH_LONG).show();
             }
 
             System.out.println(response.toString());

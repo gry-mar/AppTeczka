@@ -2,6 +2,8 @@ package edu.ib.appteczkaandroid;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
@@ -17,17 +19,21 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
 public class SetReminderActivity extends AppCompatActivity {
 
-    String spinnerSelectedItem;
+    //String spinnerSelectedItem;
     Spinner spinner;
     TimePicker timePicker;
     final Calendar calendar = Calendar.getInstance();
     String title;
     EditText edtTitle;
+    private long flag;
+    private String interval;
+    String spinnerState;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -56,8 +62,10 @@ public class SetReminderActivity extends AppCompatActivity {
 
     public void onSubmitNotifyClicked(View view) {
         title = edtTitle.getText().toString();
+        if(title ==null){
+            title = "Weź leki!!";
+        }
         int hour, minute;
-        String am_pm;
         if (Build.VERSION.SDK_INT >= 23 ){
             hour = timePicker.getHour();
             minute = timePicker.getMinute();
@@ -66,17 +74,26 @@ public class SetReminderActivity extends AppCompatActivity {
         else{
             hour = timePicker.getCurrentHour();
             minute = timePicker.getCurrentMinute();
-            System.out.println("No i chuj");
+            System.out.println("Ustawiono na czas aktualny");
         }
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                Object item = parent.getItemAtPosition(pos);
-                System.out.println(item);
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        spinnerState = spinner.getSelectedItem().toString();
+        if(spinnerState.equals("Raz dziennie")){
+            flag = AlarmManager.INTERVAL_DAY;
+            interval = "raz dziennie";
+        }
+        else if(spinnerState.equals("Dwa razy dziennie")){
+            flag = AlarmManager.INTERVAL_HALF_DAY;
+            interval = "2 razy dziennie";
+        }else if(spinnerState.equals("Co godzinę")){
+            flag = AlarmManager.INTERVAL_HOUR;
+            interval = "co godzinę";
+        }else{
+            flag = AlarmManager.INTERVAL_DAY;
+            interval = "raz dziennie";
+        }
+        System.out.println(spinnerState);
+
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
@@ -84,7 +101,7 @@ public class SetReminderActivity extends AppCompatActivity {
 
         Intent intent = new Intent(getApplicationContext(),Notify.class);
         intent.putExtra("titleExtra",title);
-        intent.putExtra("messageExtra","Sprawdź czy wziąłeś lek");
+        intent.putExtra("messageExtra","Sprawdź czy wziąłeś leki");
         intent.putExtra("reqCode",100);
         sendBroadcast(intent);
         System.out.println("Czy tu doszło wgl");
@@ -95,8 +112,9 @@ public class SetReminderActivity extends AppCompatActivity {
                 100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         assert alarmManager != null;
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),flag,
                 pendingIntent);
+        Toast.makeText(this,"Powiadomienia ustawione pomyślnie "+interval,Toast.LENGTH_SHORT).show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -109,5 +127,15 @@ public class SetReminderActivity extends AppCompatActivity {
         channel.setDescription(desc);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
+    }
+
+    public void btnCancelAllNotificationsClicked(View view) {
+        try {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            NotificationManagerCompat.from(getApplicationContext()).cancelAll();
+            Toast.makeText(this,"Powiadomienia usunięte pomyślnie", Toast.LENGTH_SHORT).show();
+        }catch(Exception e){
+            Toast.makeText(this,"Błąd przy wyłączeniu powiadomień", Toast.LENGTH_SHORT).show();
+        }
     }
 }
