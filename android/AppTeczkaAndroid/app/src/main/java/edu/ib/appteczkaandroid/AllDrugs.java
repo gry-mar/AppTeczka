@@ -82,8 +82,6 @@ public class AllDrugs extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        Map<String,String> drug = new HashMap<String,String>();
-
         db.collection(String.valueOf(emailUser)).document("lekiWszystkie")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @SuppressLint("NewApi")
@@ -107,7 +105,7 @@ public class AllDrugs extends AppCompatActivity {
 
                         }
                         System.out.println("Leki wszystkie:"+drugsInAll);
-                        String max = String.valueOf(drugsInAll.size());
+                        //String max = String.valueOf(drugsInAll.size());
                     }
                 } else {
                     Toast.makeText(AllDrugs.this,"Wystąpił błąd. Proszę spróbować ponownie.",Toast.LENGTH_SHORT).show();

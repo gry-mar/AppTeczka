@@ -59,26 +59,6 @@ public class PlannerController extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
-    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            position = intent.getIntExtra("switchPositions", position);
-
-            Map<String, Object> data = new HashMap<>();
-            customElements.get(position).setChecked(true);
-            data.put(String.valueOf(position), customElements.get(position));
-
-            db.collection(String.valueOf(emailUser)).document("lekiPlanner").set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if(task.isSuccessful())
-                        Toast.makeText(PlannerController.this,"Zaaktualizowano switch",Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,8 +132,9 @@ public class PlannerController extends AppCompatActivity {
 
     public void calculateTime() {
         int n = 0;
+        int dosagedSize = drugsDosaged.size();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        for (int i = 0; i < drugsDosaged.size(); i++) {
+        for (int i = 0; i < dosagedSize; i++) {
 
             Date current = Calendar.getInstance().getTime();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aaa z");
@@ -161,15 +142,15 @@ public class PlannerController extends AppCompatActivity {
             System.out.println(drugsDosaged.get(i).getEndDate().toString());
             System.out.println(currentDate);
             if (drugsDosaged.get(i).getEndDate().equals(currentDate)) {
-                //DocumentReference docRef = db.collection(emailUser).document("lekiNaDzien");
                 Map<String,Object> updates = new HashMap<>();
-                customElements.remove(i);
+                drugsDosaged.remove(i);
+                dosagedSize--;
                 updates.put(String.valueOf(i), FieldValue.delete());
                 FirebaseFirestore.getInstance()
                         .collection(String.valueOf(emailUser))
                         .document("lekiNaDzien")
                         .update(updates);
-                System.out.println("ZAKONCZONE DAWKOWANIE LEKU " + drugsDosaged.get(i).toString());
+                System.out.println("ZAKONCZONE DAWKOWANIE LEKU");
 
                 } else {
                 int godz = 14 / Integer.parseInt(drugsDosaged.get(i).getDosagesPerDay());
@@ -251,7 +232,7 @@ public class PlannerController extends AppCompatActivity {
         }
 
         private void setDrugsPlanner() {
-            //customElements.clear();
+            customElements.clear();
 
 
             DocumentReference docRef2 = db.collection(String.valueOf(emailUser)).document("lekiPlanner");
@@ -264,16 +245,20 @@ public class PlannerController extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             Map<String, Object> drugPlannerList = document.getData();
-                            Map<String, Object> dPListSorted = new TreeMap<>(drugPlannerList);
-                            for (Map.Entry<String, Object> entry : dPListSorted.entrySet()) {
-                                Object planner = entry.getValue();
-                                Gson gson = new Gson();
-                                String planner2 = planner.toString().replace(":", "");
-                                CustomListElement customListElement =
-                                        gson.fromJson(String.valueOf(planner2), CustomListElement.class);
-                                customListElement.setTime(customListElement.getTime().replace("00", ":00"));
-                                customElements.add(customListElement);
-                                System.out.println(customListElement);
+                            if (drugPlannerList == null || drugPlannerList.isEmpty()) {
+
+                            } else {
+                                Map<String, Object> dPListSorted = new TreeMap<>(drugPlannerList);
+                                for (Map.Entry<String, Object> entry : dPListSorted.entrySet()) {
+                                    Object planner = entry.getValue();
+                                    Gson gson = new Gson();
+                                    String planner2 = planner.toString().replace(":", "");
+                                    CustomListElement customListElement =
+                                            gson.fromJson(String.valueOf(planner2), CustomListElement.class);
+                                    customListElement.setTime(customListElement.getTime().replace("00", ":00"));
+                                    customElements.add(customListElement);
+                                    System.out.println(customListElement);
+                                }
                             }
                         }
                     } else {
