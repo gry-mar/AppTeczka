@@ -4,12 +4,24 @@ public class DrugDosaged {
     private String name;
     private String endDate;
     private String dosagesPerDay;
+    private String id;
 
     public DrugDosaged(String name, String endDate, String dosagesPerDay) {
         this.name = name;
         this.endDate = endDate;
         this.dosagesPerDay = dosagesPerDay;
     }
+
+    public DrugDosaged(String name, String endDate, String dosagesPerDay, String id) {
+        this.name = name;
+        this.endDate = endDate;
+        this.dosagesPerDay = dosagesPerDay;
+        this.id = id;
+    }
+
+    public String getId() { return id; }
+
+    public void setId(String id) { this.id = id; }
 
     public String getName() {
         return name;

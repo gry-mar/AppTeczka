@@ -4,6 +4,7 @@ public class CustomListElement {
     private String name;
     private String time;
     private boolean checked;
+    private int id;
 
     public CustomListElement(String name, String time, boolean checked) {
         this.name = name;
@@ -14,6 +15,13 @@ public class CustomListElement {
     public CustomListElement(String name, String time) {
         this.name = name;
         this.time = time;
+    }
+
+    public CustomListElement(String name, String time, boolean checked, int id) {
+        this.name = name;
+        this.time = time;
+        this.checked = checked;
+        this.id = id;
     }
 
     public String getName() {
@@ -39,6 +47,10 @@ public class CustomListElement {
     public void setChecked(boolean checked) {
         this.checked = checked;
     }
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 
     @Override
     public String toString() {

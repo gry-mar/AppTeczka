@@ -51,8 +51,10 @@ public class AllDrugs extends AppCompatActivity {
 
     private String drugName, drugExpDate;
     private int state, rowId, rowIdOld;
-    private String chosenName, chosenDate, emailUser;
+    private String chosenName, chosenDate, emailUser, keyId;
     private int drugId;
+
+    String[] keys1;
 
     private FirebaseAuth mAuth;
 
@@ -95,6 +97,9 @@ public class AllDrugs extends AppCompatActivity {
                     if (document.exists()) {
                         Map<String, Object> drugInAllList = document.getData();
                         Map<String, Object> dAListSorted = new TreeMap<>(drugInAllList);
+                        keys1 = new String[drugInAllList.size()];
+                        int i = 0;
+
                         for (Map.Entry<String, Object> entry : dAListSorted.entrySet()) {
                             Object race = entry.getValue();
                             System.out.println(race.toString());
@@ -102,8 +107,8 @@ public class AllDrugs extends AppCompatActivity {
                             DrugInAll drugInAll= gson.fromJson(String.valueOf(race), DrugInAll.class);
 
                             drugsInAll.add(drugInAll);
-
-
+                            keys1[i] = entry.getKey();
+                            i++;
                         }
                         System.out.println("Leki wszystkie:"+drugsInAll);
                         //String max = String.valueOf(drugsInAll.size());
@@ -191,10 +196,16 @@ public class AllDrugs extends AppCompatActivity {
                                     bundle.putString("name", chosenName);
                                     bundle.putString("date", chosenDate);
                                     bundle.putInt("id", rowId);
+
+                                    keyId = keys1[rowId];
+
+                                    bundle.putString("idKey", keyId);
+
                                     intent.putExtras(bundle);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
-                                    System.out.println(String.valueOf(intent));
+                                    System.out.println(chosenName + chosenDate + keyId);
+                                    System.out.println("EEEE " + String.valueOf(intent));
                                     finish();
                                 } else {
                                     Toast.makeText(AllDrugs.this, "Aby przejść do dawkowania, " +
@@ -240,7 +251,6 @@ public class AllDrugs extends AppCompatActivity {
                                     drugsInAll.add(drugInAll);
                                     keys[i] = entry.getKey();
                                     i++;
-
 
                                 }
                                 System.out.println("Leki wszystkie:" + drugsInAll);

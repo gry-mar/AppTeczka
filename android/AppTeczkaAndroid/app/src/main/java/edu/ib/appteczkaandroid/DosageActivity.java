@@ -27,7 +27,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class DosageActivity extends AppCompatActivity {
-    private String name, drugDate, emailUser;
+    private String name, drugDate, emailUser, drugKey;
     private DrugDosaged drugInfo;
     private int drugId;
     EditText etDosagesPerDay, etDateEnd;
@@ -54,6 +54,7 @@ public class DosageActivity extends AppCompatActivity {
         name = bundle.getString("name");
         drugDate = bundle.getString("date");
         drugId = bundle.getInt("id");
+        drugKey = bundle.getString("idKey");
         Toast.makeText(DosageActivity.this, name + "  " + drugDate, Toast.LENGTH_SHORT).show();
         TextView name = findViewById(R.id.nazwaLekuDawkowanie);
         name.setText(new StringBuilder().append(this.name).append(", data ważności:\n").append(drugDate).toString());
@@ -89,7 +90,7 @@ public class DosageActivity extends AppCompatActivity {
                 System.out.println(etDosagesPerDay);
 
 
-                drugInfo = new DrugDosaged(DosageActivity.this.name, dateEnd, dosagesPerDay);
+                drugInfo = new DrugDosaged(DosageActivity.this.name, dateEnd, dosagesPerDay, drugKey);
                 System.out.println(drugInfo);
                 if(etDosagesPerDay.getText().equals("") || etDateEnd.getText() ==(null)){
                     Toast.makeText(DosageActivity.this, "Aby zacząć dawkowanie należy wypełnić wszystkie wymagane pola.", Toast.LENGTH_SHORT).show();
