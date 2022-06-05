@@ -44,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -58,6 +59,9 @@ public class AddDrugToAll extends AppCompatActivity {
     private int max;
 
     private DrugInAll drugInfo;
+
+
+    private String[] keys;
 
     private Button btnAddDrug;
     private ImageButton btnBack;
@@ -111,7 +115,7 @@ public class AddDrugToAll extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-
+                drugsInAll = new ArrayList<>();
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 db.collection(String.valueOf(emailUser)).document("lekiWszystkie")
                         .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -125,17 +129,29 @@ public class AddDrugToAll extends AppCompatActivity {
                             if (document.exists()) {
                                 Map<String, Object> drugInAllList = document.getData();
                                 Map<String, Object> dAListSorted = new TreeMap<>(drugInAllList);
+                                keys = new String[drugInAllList.size()];
+                                int i = 0;
                                 for (Map.Entry<String, Object> entry : dAListSorted.entrySet()) {
                                     Object race = entry.getValue();
                                     Gson gson = new Gson();
                                     DrugInAll drugInAll= gson.fromJson(String.valueOf(race), DrugInAll.class);
-
+                                    keys[i] = entry.getKey();
                                     drugsInAll.add(drugInAll);
                                     System.out.println(drugsInAll.toString());
+                                    i++;
 
 
                                 }
-                                max = drugsInAll.size();
+                                max = Integer.parseInt(keys[0]);
+                                for (int j = 1; j < keys.length; j++) {
+                                    int temp  = Integer.parseInt(keys[j]);
+                                    if(Integer.parseInt(keys[j])>max){
+                                        max = temp;
+                                    }
+                                }
+                                max += 1;
+
+
                                 System.out.println("MAKSYMALNA WARTOSC: " + max);
                             }
                         } else {
