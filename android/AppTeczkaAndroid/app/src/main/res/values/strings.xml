@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">AppTeczkaAndroid</string>
     <string name="sprawd_ze_wszystkimi">Sprawdź ze wszystkimi</string>
-    <string name="por_wnaj_2_leki">Porównaj 2 leki</string>
+    <string name="por_wnaj_2_leki">Porównaj dwa leki</string>
     <string name="otw_rz_samouczek">Otwórz samouczek</string>
     <string name="wyszukaj_po_substancji_aktywnej">Wyszukaj po substancji aktywnej</string>
     <string name="interakcje_pomi_dzy_lekami">Interakcje pomiędzy lekami</string>
-    <string name="wrowad_nazw_drugiego_leku">Wrowadź nazwę drugiego leku</string>
+    <string name="wrowad_nazw_drugiego_leku">Nazwa drugiego leku</string>
     <string name="por_wnaj">Porównaj</string>
-    <string name="wprowad_nazw_pierwszego_leku">Wprowadź nazwę pierwszego leku</string>
+    <string name="wprowad_nazw_pierwszego_leku">Nazwa pierwszego leku</string>
     <string name="wprowadzLogin">Login</string>
     <string name="wprowadzHaslo">Hasło</string>
     <string name="zalogujSie">Zaloguj się</string>
@@ -23,11 +23,11 @@
     <string name="rozpDawkowanie">Rozpocznij dawkowanie</string>
     <string name="nazwaLeku">Nazwa leku</string>
     <string name="dataWaznosciLeku">Data ważności leku</string>
-    <string name="drugName">Podaj nazwę leku</string>
-    <string name="drugDateExp">Podaj datę ważności leku</string>
+    <string name="drugName">Nazwa leku</string>
+    <string name="drugDateExp">Data ważności leku</string>
     <string name="dodajLek2">Dodaj lek</string>
-    <string name="iloscDawek">Wpisz dzienną ilość dawek leku</string>
-    <string name="dataKoncaDawkowania">Wpisz datę końcową dawkowania</string>
+    <string name="iloscDawek">Dzienna ilość dawek</string>
+    <string name="dataKoncaDawkowania">Zakończenie dawkowania</string>
     <string name="startDosage">Dawkuj</string>
     <string name="dodajNazweWlasna">Zmień nazwę leku na własną*</string>
     <string name="toopcjonalne">*Nie jest to wymagane pole.</string>

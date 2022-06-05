@@ -9,48 +9,61 @@
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="150dp"
-        android:layout_height="70dp"
+        android:layout_width="192dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/zalogujSie"
+        android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.792" />
+        app:layout_constraintVertical_bias="0.79" />
 
     <EditText
         android:id="@+id/etEmailL"
-        android:layout_width="220dp"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginRight="60dp"
+        android:drawableRight="@drawable/login_email"
         android:ems="10"
         android:hint="@string/wprowadzEmail"
         android:inputType="textPersonName"
+        android:textSize="18dp"
         app:layout_constraintBottom_toTopOf="@+id/etPasswordL"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.858"
-        android:drawableRight="@drawable/login_email" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/etPasswordL"
-        android:layout_width="220dp"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="116dp"
+        android:layout_marginTop="50dp"
+        android:drawableRight="@drawable/login_password"
         android:ems="10"
         android:hint="@string/wprowadzHaslo"
         android:inputType="textPassword"
+        android:textSize="18dp"
         app:layout_constraintBottom_toTopOf="@+id/btnLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:drawableRight="@drawable/login_password"/>
+        app:layout_constraintTop_toBottomOf="@id/etEmailL" />
 
     <TextView
         android:id="@+id/tvForgotLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nie masz konta?"
+        android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -66,6 +79,7 @@
         android:clickable="true"
         android:focusable="true"
         android:onClick="btnGoToRegister"
+        android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -124,6 +125,11 @@ public class AllDrugs extends AppCompatActivity {
                             tv1.setTextColor(Color.parseColor("#3e3e3e"));
                             tv1.setGravity(Gravity.CENTER);
                             tv1.setPadding(0, 10, 0, 10);
+                            tv1.setHeight(90);
+                            tv1.setMaxWidth(120);
+                            tv1.setBackgroundResource(R.drawable.cell_shape);
+                            tv1.setMinWidth(120);
+
                             row.addView(tv1);
 
                             TextView tv2 = new TextView(AllDrugs.this);
@@ -131,6 +137,11 @@ public class AllDrugs extends AppCompatActivity {
                             tv2.setTextColor(Color.parseColor("#3e3e3e"));
                             tv2.setGravity(Gravity.CENTER);
                             tv2.setPadding(0, 10, 0, 10);
+                            tv2.setHeight(90);
+                            tv2.setMaxWidth(80);
+                            tv2.setMinWidth(80);
+                            tv2.setBackgroundResource(R.drawable.cell_shape);
+
                             row.addView(tv2);
 
                             row.setId(position);
@@ -141,6 +152,8 @@ public class AllDrugs extends AppCompatActivity {
                                 public void onClick(View view) {
                                     if (state == 0) {
                                         row.setBackgroundColor(Color.parseColor("#adadad"));
+                                        tv1.setBackgroundResource(R.drawable.cell_shape_clicked1);
+                                        tv2.setBackgroundResource(R.drawable.cell_shape_clicked1);
                                         state = 1;
                                         rowId = row.getId();
                                         rowIdOld = rowId;
@@ -155,6 +168,8 @@ public class AllDrugs extends AppCompatActivity {
                                     } else if (state == 1) {
                                         if (row.getId() == rowIdOld) {
                                             row.setBackgroundColor(Color.TRANSPARENT);
+                                            tv1.setBackgroundResource(R.drawable.cell_shape_clicked2);
+                                            tv2.setBackgroundResource(R.drawable.cell_shape_clicked2);
                                             state = 0;
                                         } else {
                                             Toast.makeText(AllDrugs.this, "Nie można równocześnie zaznaczyć " +

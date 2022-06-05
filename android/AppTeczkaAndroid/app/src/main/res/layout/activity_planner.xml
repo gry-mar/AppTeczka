@@ -11,6 +11,7 @@
         android:id="@+id/imageButton2"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginRight="6dp"
         android:background="@android:color/transparent"
         android:onClick="btnReturnOnClick"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,22 +46,25 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         app:srcCompat="@drawable/lekinadzien"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-29dp" />
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="-30dp" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="40dp"
         android:text="Kliknij na lek aby oznaczyć, że został przyjęty."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageButton2"
         app:layout_constraintTop_toBottomOf="@+id/listView1"
-        app:layout_constraintVertical_bias="0.471" />
+        app:layout_constraintVertical_bias="0.521" />
 
     <TextView
         android:id="@+id/textView3"

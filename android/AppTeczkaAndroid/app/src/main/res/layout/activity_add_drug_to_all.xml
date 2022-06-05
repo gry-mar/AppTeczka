@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddDrugToAll"
-    android:background="@drawable/backgroundimg">
+    android:background="@drawable/backgroundimg"
+    tools:context=".AddDrugToAll">
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="374dp"
-        android:layout_height="186dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.837"
@@ -19,59 +22,70 @@
         app:layout_constraintVertical_bias="0.003"
         app:srcCompat="@drawable/dodaj_lek_do_apteczki" />
 
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/return_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.044"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.945"
-        app:srcCompat="@drawable/return_btn" />
-
     <EditText
         android:id="@+id/etDrugName"
-        android:layout_width="220dp"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginTop="260dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="60dp"
+        android:drawableRight="@drawable/name_add_to_all"
         android:hint="@string/drugName"
         android:inputType="textPersonName"
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <EditText
         android:id="@+id/etDrugDateExp"
-        android:layout_width="220dp"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="60dp"
         android:clickable="false"
         android:cursorVisible="false"
         android:datePickerMode="spinner"
+        android:drawableRight="@drawable/date_add_to_all"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:hint="@string/drugDateExp"
         android:inputType="date"
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etDrugName" />
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/return_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDrugDateExp"
+        app:layout_constraintVertical_bias="0.494"
+        app:srcCompat="@drawable/return_btn" />
 
     <Button
         android:id="@+id/btnAddDrugFinal"
         android:layout_width="192dp"
-        android:layout_height="101dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="70dp"
         android:text="@string/dodajLek2"
-        android:textSize="20dp"
+        android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toEndOf="@+id/btnBack"
         app:layout_constraintTop_toBottomOf="@+id/etDrugDateExp"
-        app:layout_constraintVertical_bias="0.906" />
+        app:layout_constraintVertical_bias="0.493" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
