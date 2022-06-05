@@ -23,54 +23,69 @@
 
     <EditText
         android:id="@+id/edtDrug1Name"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
         android:ems="10"
         android:hint="@string/wprowad_nazw_pierwszego_leku"
         android:inputType="text"
+        android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.569"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.134" />
+        android:drawableRight="@drawable/coll1"
+        app:layout_constraintVertical_bias="0.141" />
 
     <EditText
         android:id="@+id/edtDrug2Name"
-        android:layout_width="303dp"
-        android:layout_height="62dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="60dp"
         android:ems="10"
         android:hint="@string/wrowad_nazw_drugiego_leku"
         android:inputType="text"
+        android:textSize="18dp"
+        android:drawableRight="@drawable/coll2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtDrug1Name"
-        app:layout_constraintVertical_bias="0.004" />
+        app:layout_constraintVertical_bias="0.029" />
 
     <Button
         android:id="@+id/btnCompareAPI"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/por_wnaj"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginBottom="20dp"
         android:onClick="compareTwoClicked"
+        android:text="@string/por_wnaj"
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.106"
+        app:layout_constraintEnd_toStartOf="@+id/tvResult"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtDrug2Name" />
 
     <TextView
         android:id="@+id/tvResult"
-        android:layout_width="253dp"
-        android:layout_height="271dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginBottom="100dp"
+        android:layout_marginTop="20dp"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtDrug2Name"
-        app:layout_constraintVertical_bias="0.552" />
+        app:layout_constraintTop_toBottomOf="@+id/btnCompareAPI" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
