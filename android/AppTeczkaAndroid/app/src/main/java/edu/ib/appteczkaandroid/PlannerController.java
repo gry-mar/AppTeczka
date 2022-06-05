@@ -57,6 +57,8 @@ public class PlannerController extends AppCompatActivity {
 
     private String emailUser;
 
+    private String[] positionsArray;
+
     private FirebaseAuth mAuth;
 
 
@@ -151,6 +153,13 @@ public class PlannerController extends AppCompatActivity {
                         .document("lekiNaDzien")
                         .update(updates);
                 System.out.println("ZAKONCZONE DAWKOWANIE LEKU");
+//                for (int k = 0; k < Integer.parseInt(drugsDosaged.get(i).getDosagesPerDay()); k++) {
+//                    updates.put(String.valueOf(i), FieldValue.delete());
+//                    FirebaseFirestore.getInstance()
+//                            .collection(String.valueOf(emailUser))
+//                            .document("lekiPlanner")
+//                            .update(updates);
+//                }
 
                 } else {
                 int godz = 14 / Integer.parseInt(drugsDosaged.get(i).getDosagesPerDay());
@@ -185,10 +194,11 @@ public class PlannerController extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 System.out.println("CO FINALNIE WCHODZI DO BAZY: " + data);
                 if (task.isComplete())
-                    toggleButtonsGet();
+                    getPositionFromLekiPlanner();
             }
         });
     }
+
 
         private void toggleButtonsGet() {
             DocumentReference docRef = db.collection(String.valueOf(emailUser))
@@ -203,24 +213,27 @@ public class PlannerController extends AppCompatActivity {
                         if (document.exists()) {
                             Map<String, Object> toggleButtons = document.getData();
                             Map<String, Object> tbSorted = new TreeMap<String,Object>(toggleButtons);
+                            int i = 0;
                             for (Map.Entry<String, Object> entry : tbSorted.entrySet()) {
                                 Object buttonValue = entry.getValue();
 
                                 boolean btnValue = Boolean.parseBoolean(String.valueOf(buttonValue));
-                                int position = Integer.parseInt(entry.getKey());
+                                //int position = Integer.parseInt(entry.getKey());
+                                String position = positionsArray[i];
                                 System.out.println("POSITION: " + position);
                                 System.out.println(btnValue);
 
-                                data.put(String.valueOf(position), new CustomListElement(customElements.get(position).getName(),
-                                        customElements.get(position).getTime(), btnValue));
+                                data.put(position, new CustomListElement(customElements.get(Integer.parseInt(position)).getName(),
+                                        customElements.get(Integer.parseInt(position)).getTime(), btnValue));
 
                                 System.out.println("TOGGLE BUTTONS GET: " + data.toString());
                                 db.collection(String.valueOf(emailUser))
                                         .document("lekiPlanner")
-                                        .update(String.valueOf(entry.getKey()), new CustomListElement(customElements.get(Integer.parseInt(entry.getKey())).getName(),
-                                                customElements.get(Integer.parseInt(entry.getKey())).getTime(), btnValue));
+                                        .update(position, new CustomListElement(customElements.get(Integer.parseInt(position)).getName(),
+                                                customElements.get(Integer.parseInt(position)).getTime(), btnValue));
                                 System.out.println(customElements.toString());
                                 System.out.println("KEY: " + entry.getKey().toString());
+                                i++;
                             }
                         }
                     } else {
@@ -269,6 +282,35 @@ public class PlannerController extends AppCompatActivity {
             });
         }
 
+    public void getPositionFromLekiPlanner(){
+        DocumentReference docRef = db.collection(String.valueOf(emailUser))
+                .document("lekiPlanner");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("NewApi")
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> drugPlannerList = document.getData();
+                        Map<String, Object> dDListSorted = new TreeMap<>(drugPlannerList);
+                        positionsArray = new String[customElements.size()];
+                        int i = 0;
+                        for (Map.Entry<String, Object> entry : dDListSorted.entrySet()) {
+                            positionsArray[i] = entry.getKey();
+                            i++;
+
+                        }
+                    }
+                } else {
+                }
+                if(task.isComplete())
+                    toggleButtonsGet();
+            }
+        });
+    }
+
         private void setAdapter(){
         plannerCustomAdapter = new PlannerCustomAdapter(customElements, PlannerController.this);
 
@@ -281,7 +323,7 @@ public class PlannerController extends AppCompatActivity {
     public void btnReturnOnClick(View view) {
         Intent intent = new Intent(this, MenuAll.class);
         startActivity(intent);
-        finish();
+
     }
 
 }
