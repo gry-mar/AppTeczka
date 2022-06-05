@@ -163,7 +163,7 @@ public class PlannerController extends AppCompatActivity {
             if (drugsDosaged.get(i).getEndDate().equals(currentDate)) {
                 //DocumentReference docRef = db.collection(emailUser).document("lekiNaDzien");
                 Map<String,Object> updates = new HashMap<>();
-                customElements.remove(i);
+                drugsDosaged.remove(i);
                 updates.put(String.valueOf(i), FieldValue.delete());
                 FirebaseFirestore.getInstance()
                         .collection(String.valueOf(emailUser))
