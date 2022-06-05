@@ -56,6 +56,7 @@ public class AllDrugs extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     ArrayList<DrugInAll> drugsInAll = new ArrayList<>();
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +98,7 @@ public class AllDrugs extends AppCompatActivity {
                         Map<String, Object> dAListSorted = new TreeMap<>(drugInAllList);
                         for (Map.Entry<String, Object> entry : dAListSorted.entrySet()) {
                             Object race = entry.getValue();
+                            System.out.println(race.toString());
                             Gson gson = new Gson();
                             DrugInAll drugInAll= gson.fromJson(String.valueOf(race), DrugInAll.class);
 
@@ -105,34 +107,16 @@ public class AllDrugs extends AppCompatActivity {
 
                         }
                         System.out.println("Leki wszystkie:"+drugsInAll);
+                        String max = String.valueOf(drugsInAll.size());
                     }
                 } else {
                     Toast.makeText(AllDrugs.this,"Wystąpił błąd. Proszę spróbować ponownie.",Toast.LENGTH_SHORT).show();
                 }
-//                    ArrayList<Map<String, Object>> drugs = new ArrayList<>();
-//                    drugs.add(task.getResult().getData());
-//                    System.out.println(drugs);
-
-//                    String[] splitdrugs = drugs.toString().split(",");
-//                    if((task.getResult().getData() == null)) {
-//                        System.out.println("dupalekkkkk");
-//                    }else {
-//                        for (int i = 0; i < Objects.requireNonNull(task.getResult().getData()).size(); i++) {
-//                            splitdrugs[i] = splitdrugs[i].replace("{", "");
-//                            splitdrugs[i] = splitdrugs[i].replace("}", "");
-//                            splitdrugs[i] = splitdrugs[i].replace("[", "");
-//                            splitdrugs[i] = splitdrugs[i].replace("]", "");
-//                            String[] splitOneDrug = splitdrugs[i].split("=");
-//                            drug.put(String.valueOf(splitOneDrug[0]), String.valueOf(splitOneDrug[1]));
-//
-//                        }
 
                         TableLayout table = (TableLayout) AllDrugs.this.findViewById(R.id.tableAllDrugs);
-                        int i = 0;
-                        //for (Map.Entry<String, String> drugEntry : drug.entrySet()) {
+                        position = 0;
+
                             for(DrugInAll d:drugsInAll){
-//                            String key = drugEntry.getKey();
-//                            String value = drugEntry.getValue();
                                 String key = d.getName();
                                 String value = d.getDate();
                             final TableRow row = new TableRow(AllDrugs.this);
@@ -151,7 +135,8 @@ public class AllDrugs extends AppCompatActivity {
                             tv2.setPadding(0, 10, 0, 10);
                             row.addView(tv2);
 
-                            row.setId(i);
+                            row.setId(position);
+                            position++;
                             row.setClickable(true);
                             row.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -182,7 +167,6 @@ public class AllDrugs extends AppCompatActivity {
                             });
 
                             table.addView(row);
-                            i++;
                         }
                         Button startDosage = findViewById(R.id.btnStartDrug);
                         startDosage.setOnClickListener(new View.OnClickListener() {
@@ -215,38 +199,69 @@ public class AllDrugs extends AppCompatActivity {
             //}
         });
         btnRemoveDrug.setOnClickListener(new View.OnClickListener() {
+            String[] keys;
             @Override
             public void onClick(View view) {
-                DocumentReference docRef = db.collection(String.valueOf(emailUser)).document("lekiWszystkie");
-                Map<String, Object> updates = new HashMap<>();
-
                 Map<String, Object> deleteDrug = new HashMap<>();
                 Map<String, Object> deleteDrug2 = new HashMap<>();
 
+                db.collection(String.valueOf(emailUser)).document("lekiWszystkie")
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @SuppressLint("NewApi")
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // Document found in the offline cache
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Map<String, Object> drugInAllList = document.getData();
+                                Map<String, Object> dAListSorted = new TreeMap<>(drugInAllList);
+                                keys = new String[drugInAllList.size()];
+                                int i = 0;
+                                for (Map.Entry<String, Object> entry : dAListSorted.entrySet()) {
+                                    Object race = entry.getValue();
+                                    Gson gson = new Gson();
+                                    DrugInAll drugInAll = gson.fromJson(String.valueOf(race), DrugInAll.class);
 
+                                    drugsInAll.add(drugInAll);
+                                    keys[i] = entry.getKey();
+                                    i++;
+
+
+                                }
+                                System.out.println("Leki wszystkie:" + drugsInAll);
+                            }
+                        } else {
+                            Toast.makeText(AllDrugs.this, "Wystąpił błąd. Proszę spróbować ponownie.", Toast.LENGTH_SHORT).show();
+                        }
+                        if(task.isComplete()){
+                            deleteDrug.put(String.valueOf(keys[rowId]), FieldValue.delete());
+                            System.out.println(keys[rowId]);
+                            FirebaseFirestore.getInstance()
+                                    .collection(String.valueOf(emailUser))
+                                    .document("lekiWszystkie")
+                                    .update(deleteDrug);
+
+                            deleteDrug2.put(String.valueOf(keys[rowId]), FieldValue.delete());
+                            FirebaseFirestore.getInstance()
+                                    .collection(String.valueOf(emailUser))
+                                    .document("lekiNaDzien")
+                                    .update(deleteDrug2);
+
+                            //db.collection(String.valueOf(emailUser)).document("togglebuttons").delete();
+
+                            Intent intent = new Intent(getApplicationContext(), AllDrugs.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+
+                            chosenName = "name";
+                            drugsInAll.remove(deleteDrug);
+                        }
+                    }});
 
                 //deleteDrug.put(String.valueOf(chosenName), FieldValue.delete());
-                deleteDrug.put(String.valueOf(rowId), FieldValue.delete());
-                FirebaseFirestore.getInstance()
-                        .collection(String.valueOf(emailUser))
-                        .document("lekiWszystkie")
-                        .update(deleteDrug);
-
-                deleteDrug2.put(String.valueOf(rowId), FieldValue.delete());
-                FirebaseFirestore.getInstance()
-                        .collection(String.valueOf(emailUser))
-                        .document("lekiNaDzien")
-                        .update(deleteDrug2);
-
-                db.collection(String.valueOf(emailUser)).document("togglebuttons").delete();
-
-                Intent intent = new Intent(getApplicationContext(), AllDrugs.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-
-                chosenName = "name";
-
             }
         });
     }

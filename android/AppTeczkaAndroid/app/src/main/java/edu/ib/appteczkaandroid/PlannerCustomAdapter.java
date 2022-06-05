@@ -91,6 +91,7 @@ public class PlannerCustomAdapter extends BaseAdapter implements ListAdapter {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 Map<String, Object> data = new HashMap<>();
                 data.put(String.valueOf(position), b);
+                System.out.println("POZYCJA PRZY ADAPTERZE: " + position);
                 //btn.setChecked(b);
                 System.out.println("W adapterze przy kliknięciu: " + data.toString());
                 db.collection(String.valueOf(emailUser)).document("togglebuttons")

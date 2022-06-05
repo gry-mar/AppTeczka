@@ -58,7 +58,7 @@ public class MenuAll extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         emailUser = currentUser.getEmail();
 
-        createNotificationChannel();
+        //createNotificationChannel();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(String.valueOf(emailUser)).document("lekiWszystkie")
@@ -167,7 +167,7 @@ public class MenuAll extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
+/*
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void createNotificationChannel(){
         CharSequence name = "Default channel";
@@ -178,5 +178,5 @@ public class MenuAll extends AppCompatActivity {
         channel.setDescription(desc);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
-    }
+    } */
 }

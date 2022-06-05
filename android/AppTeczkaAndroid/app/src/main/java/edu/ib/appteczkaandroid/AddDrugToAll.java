@@ -131,78 +131,87 @@ public class AddDrugToAll extends AppCompatActivity {
                                     DrugInAll drugInAll= gson.fromJson(String.valueOf(race), DrugInAll.class);
 
                                     drugsInAll.add(drugInAll);
+                                    System.out.println(drugsInAll.toString());
 
 
                                 }
                                 max = drugsInAll.size();
+                                System.out.println("MAKSYMALNA WARTOSC: " + max);
                             }
                         } else {
                             max =0;
+                        }
+                        if (task.isComplete()) {
+
+
+                            drugName = etName.getText().toString();
+                            drugDate = etDate.getText().toString();
+
+                            yearInt = calendar.get(Calendar.YEAR);
+                            monthInt = calendar.get(Calendar.MONTH) + 1;
+                            dayInt = calendar.get(Calendar.DAY_OF_MONTH);
+
+                            year = String.valueOf(yearInt);
+                            month = String.valueOf(monthInt);
+                            day = String.valueOf(dayInt);
+                            int zmiennaRobocza = 0;
+                            List<Character> drugNameChars = drugName.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
+                            List<Character> specialchars = new ArrayList<>();
+                            specialchars.add(('.'));
+                            specialchars.add('+');
+                            specialchars.add(',');
+                            specialchars.add('%');
+                            specialchars.add('^');
+                            specialchars.add('&');
+                            specialchars.add('*');
+                            specialchars.add('#');
+                            specialchars.add('@');
+                            specialchars.add('!');
+                            specialchars.add('~');
+                            specialchars.add(';');
+                            specialchars.add('\n');
+                            specialchars.add('/');
+                            specialchars.add('`');
+                            specialchars.add('|');
+                            specialchars.add('{');
+                            specialchars.add('}');
+                            specialchars.add('-');
+                            specialchars.add(':');
+                            System.out.println("RACE 2:" + drugNameChars.toString());
+                            for (int i = 0; i < drugNameChars.size(); i++) {
+                                for(int j = 0; j < specialchars.size(); j++){
+                                    if (drugNameChars.get(i) == (specialchars.get(j))) {
+                                        Toast.makeText(AddDrugToAll.this, "Nazwa leku nie może zawierać znaków specjalnych.", Toast.LENGTH_SHORT).show();
+                                        zmiennaRobocza = 1;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (zmiennaRobocza == 0) {
+                                if (etDate.getText().equals("") || etName.getText() == (null)) {
+                                    Toast.makeText(AddDrugToAll.this, "Aby dodać lek należy wypełnić wszystkie pola.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    //FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                    Map<String, Object> data = new HashMap<>();
+                                    drugInfo = new DrugInAll(drugName,drugDate);
+                                    String maxStr = String.valueOf(max);
+                                    data.put(maxStr, drugInfo);
+
+                                    db.collection(String.valueOf(emailUser)).document("lekiWszystkie")
+                                            .set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful())
+
+                                                System.out.println(maxStr + "," + drugInfo.toString());
+                                            Toast.makeText(AddDrugToAll.this, "Lek został poprawnie dodany", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            }
+
                         }}});
 
-                drugName = etName.getText().toString();
-                drugDate = etDate.getText().toString();
-
-                yearInt = calendar.get(Calendar.YEAR);
-                monthInt = calendar.get(Calendar.MONTH) + 1;
-                dayInt = calendar.get(Calendar.DAY_OF_MONTH);
-
-                year = String.valueOf(yearInt);
-                month = String.valueOf(monthInt);
-                day = String.valueOf(dayInt);
-                int zmiennaRobocza = 0;
-                List<Character> drugNameChars = drugName.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
-                List<Character> specialchars = new ArrayList<>();
-                specialchars.add(('.'));
-                specialchars.add('+');
-                specialchars.add(',');
-                specialchars.add('%');
-                specialchars.add('^');
-                specialchars.add('&');
-                specialchars.add('*');
-                specialchars.add('#');
-                specialchars.add('@');
-                specialchars.add('!');
-                specialchars.add('~');
-                specialchars.add(';');
-                specialchars.add('\n');
-                specialchars.add('/');
-                specialchars.add('`');
-                specialchars.add('|');
-                specialchars.add('{');
-                specialchars.add('}');
-                specialchars.add('-');
-                specialchars.add(':');
-                System.out.println("RACE 2:" + drugNameChars.toString());
-                for (int i = 0; i < drugNameChars.size(); i++) {
-                    for(int j = 0; j < specialchars.size(); j++){
-                        if (drugNameChars.get(i) == (specialchars.get(j))) {
-                            Toast.makeText(AddDrugToAll.this, "Nazwa leku nie może zawierać znaków specjalnych.", Toast.LENGTH_SHORT).show();
-                            zmiennaRobocza = 1;
-                            break;
-                        }
-                    }
-                }
-                if (zmiennaRobocza == 0) {
-                    if (etDate.getText().equals("") || etName.getText() == (null)) {
-                        Toast.makeText(AddDrugToAll.this, "Aby dodać lek należy wypełnić wszystkie pola.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        //FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        Map<String, Object> data = new HashMap<>();
-                        drugInfo = new DrugInAll(drugName,drugDate);
-                        String maxStr = String.valueOf(max);
-                        data.put(maxStr, drugInfo);
-
-                        db.collection(String.valueOf(emailUser)).document("lekiWszystkie")
-                                .set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful())
-                                    Toast.makeText(AddDrugToAll.this, "Lek został poprawnie dodany", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }
         }
         });
 

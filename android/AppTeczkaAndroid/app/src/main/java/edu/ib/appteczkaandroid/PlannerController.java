@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.core.utilities.Tree;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firestore.v1.WriteResult;
@@ -87,8 +88,6 @@ public class PlannerController extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         emailUser = currentUser.getEmail();
 
-        System.out.println("gówno" + emailUser);
-
         if(currentUser == null){
             Intent intent = new Intent(getApplicationContext(), Login.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -125,8 +124,8 @@ public class PlannerController extends AppCompatActivity {
 
                                 drugsDosaged.add(drugDosaged);
 
-                                calculateTime();
                             }
+                        calculateTime();
                     }
                     } else {
                     }
@@ -142,11 +141,11 @@ public class PlannerController extends AppCompatActivity {
         int today = calendar.get(Calendar.DAY_OF_YEAR);
 
         if (today != lastTimeStarted) {
-            // = null;
+            db.collection(String.valueOf(emailUser)).document("togglebuttons").delete();
 
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("last_time_started", today);
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -159,10 +158,20 @@ public class PlannerController extends AppCompatActivity {
             Date current = Calendar.getInstance().getTime();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aaa z");
             String currentDate = simpleDateFormat.format(current.getTime()).substring(0, 10);
-
+            System.out.println(drugsDosaged.get(i).getEndDate().toString());
+            System.out.println(currentDate);
             if (drugsDosaged.get(i).getEndDate().equals(currentDate)) {
-                // ZAKONCZONE DAWKOWANIE
-            } else {
+                //DocumentReference docRef = db.collection(emailUser).document("lekiNaDzien");
+                Map<String,Object> updates = new HashMap<>();
+                customElements.remove(i);
+                updates.put(String.valueOf(i), FieldValue.delete());
+                FirebaseFirestore.getInstance()
+                        .collection(String.valueOf(emailUser))
+                        .document("lekiNaDzien")
+                        .update(updates);
+                System.out.println("ZAKONCZONE DAWKOWANIE LEKU " + drugsDosaged.get(i).toString());
+
+                } else {
                 int godz = 14 / Integer.parseInt(drugsDosaged.get(i).getDosagesPerDay());
                 int godzTemp = 0;
                 ArrayList<String> dosagesTimes = new ArrayList<>();
@@ -173,10 +182,10 @@ public class PlannerController extends AppCompatActivity {
 
 
                     customElements.add(new CustomListElement
-                            (drugsDosaged.get(i).getName(), dosagesTimes.get(j), false));
+                            (drugsDosaged.get(i).getName(), dosagesTimes.get(j)));
 
                     data.put(String.valueOf(n), new CustomListElement
-                            (drugsDosaged.get(i).getName(), dosagesTimes.get(j), false));
+                            (drugsDosaged.get(i).getName(), dosagesTimes.get(j)));
                     n++;
 
 
@@ -218,15 +227,19 @@ public class PlannerController extends AppCompatActivity {
 
                                 boolean btnValue = Boolean.parseBoolean(String.valueOf(buttonValue));
                                 int position = Integer.parseInt(entry.getKey());
+                                System.out.println("POSITION: " + position);
+                                System.out.println(btnValue);
 
-                                //System.out.println("Przy odbieraniu z togglebuttons z firebase: " + customElements);
                                 data.put(String.valueOf(position), new CustomListElement(customElements.get(position).getName(),
-                                        customElements.get(position).getTime(), false));
+                                        customElements.get(position).getTime(), btnValue));
+
+                                System.out.println("TOGGLE BUTTONS GET: " + data.toString());
                                 db.collection(String.valueOf(emailUser))
                                         .document("lekiPlanner")
-                                        .update(String.valueOf(position), new CustomListElement(customElements.get(position).getName(),
-                                                customElements.get(position).getTime(), btnValue));
-
+                                        .update(String.valueOf(entry.getKey()), new CustomListElement(customElements.get(Integer.parseInt(entry.getKey())).getName(),
+                                                customElements.get(Integer.parseInt(entry.getKey())).getTime(), btnValue));
+                                System.out.println(customElements.toString());
+                                System.out.println("KEY: " + entry.getKey().toString());
                             }
                         }
                     } else {
@@ -238,7 +251,7 @@ public class PlannerController extends AppCompatActivity {
         }
 
         private void setDrugsPlanner() {
-            customElements.clear();
+            //customElements.clear();
 
 
             DocumentReference docRef2 = db.collection(String.valueOf(emailUser)).document("lekiPlanner");

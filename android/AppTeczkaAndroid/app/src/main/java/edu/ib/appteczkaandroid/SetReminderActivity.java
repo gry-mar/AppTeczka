@@ -49,7 +49,7 @@ public class SetReminderActivity extends AppCompatActivity {
         timePicker.setIs24HourView(true);
         edtTitle = findViewById(R.id.edtTitle);
 
-        createNotificationChannel();
+        //createNotificationChannel();
 
 
     }
@@ -116,7 +116,7 @@ public class SetReminderActivity extends AppCompatActivity {
                 pendingIntent);
         Toast.makeText(this,"Powiadomienia ustawione pomyślnie "+interval,Toast.LENGTH_SHORT).show();
     }
-
+/*
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void createNotificationChannel(){
         CharSequence name = "Default channel";
@@ -127,7 +127,7 @@ public class SetReminderActivity extends AppCompatActivity {
         channel.setDescription(desc);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
-    }
+    } */
 
     public void btnCancelAllNotificationsClicked(View view) {
         try {

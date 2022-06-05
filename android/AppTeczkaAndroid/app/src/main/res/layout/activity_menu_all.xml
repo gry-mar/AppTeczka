@@ -9,51 +9,51 @@
 
     <Button
         android:id="@+id/btnAllDrugs"
-        android:layout_width="170dp"
-        android:layout_height="63dp"
+        android:layout_width="222dp"
+        android:layout_height="58dp"
         android:layout_marginTop="92dp"
         android:text="Wszystkie leki"
         app:layout_constraintBottom_toTopOf="@+id/btnDailyDrugs"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.854"
+        app:layout_constraintHorizontal_bias="0.566"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/btnDailyDrugs"
-        android:layout_width="186dp"
-        android:layout_height="52dp"
-        android:layout_marginBottom="8dp"
-        android:text="Planer"
-        app:layout_constraintBottom_toTopOf="@+id/btnInteractions"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.928"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintVertical_bias="0.872" />
 
     <Button
         android:id="@+id/btnInteractions"
         android:layout_width="222dp"
         android:layout_height="58dp"
-        android:layout_marginBottom="444dp"
+        android:layout_marginBottom="324dp"
         android:text="Interakcje"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.973"
+        app:layout_constraintHorizontal_bias="0.56"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/heheh"
-        android:layout_width="221dp"
-        android:layout_height="57dp"
+        android:layout_width="222dp"
+        android:layout_height="58dp"
         android:onClick="onNoteClicked"
         android:text="Ustaw powiadomienia"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.968"
+        app:layout_constraintHorizontal_bias="0.557"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnInteractions"
-        app:layout_constraintVertical_bias="0.051" />
+        app:layout_constraintVertical_bias="0.052" />
+
+    <Button
+        android:id="@+id/btnDailyDrugs"
+        android:layout_width="222dp"
+        android:layout_height="58dp"
+        android:layout_marginBottom="8dp"
+        android:text="Planer"
+        app:layout_constraintBottom_toTopOf="@+id/btnInteractions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.568"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnLogout"
