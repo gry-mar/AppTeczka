@@ -194,7 +194,8 @@ public class PlannerController extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 System.out.println("CO FINALNIE WCHODZI DO BAZY: " + data);
                 if (task.isComplete())
-                    getPositionFromLekiPlanner();
+                    //getPositionFromLekiPlanner();
+                    toggleButtonsGet();
             }
         });
     }
@@ -218,19 +219,19 @@ public class PlannerController extends AppCompatActivity {
                                 Object buttonValue = entry.getValue();
 
                                 boolean btnValue = Boolean.parseBoolean(String.valueOf(buttonValue));
-                                //int position = Integer.parseInt(entry.getKey());
-                                String position = positionsArray[i];
+                                int position = Integer.parseInt(entry.getKey());
+                                String positionStr = String.valueOf(position);
                                 System.out.println("POSITION: " + position);
                                 System.out.println(btnValue);
 
-                                data.put(position, new CustomListElement(customElements.get(Integer.parseInt(position)).getName(),
-                                        customElements.get(Integer.parseInt(position)).getTime(), btnValue));
+                                data.put(positionStr, new CustomListElement(customElements.get(Integer.parseInt(positionStr)).getName(),
+                                        customElements.get(Integer.parseInt(positionStr)).getTime(), btnValue));
 
                                 System.out.println("TOGGLE BUTTONS GET: " + data.toString());
                                 db.collection(String.valueOf(emailUser))
                                         .document("lekiPlanner")
-                                        .update(position, new CustomListElement(customElements.get(Integer.parseInt(position)).getName(),
-                                                customElements.get(Integer.parseInt(position)).getTime(), btnValue));
+                                        .update(positionStr, new CustomListElement(customElements.get(Integer.parseInt(positionStr)).getName(),
+                                                customElements.get(Integer.parseInt(positionStr)).getTime(), btnValue));
                                 System.out.println(customElements.toString());
                                 System.out.println("KEY: " + entry.getKey().toString());
                                 i++;
@@ -295,13 +296,15 @@ public class PlannerController extends AppCompatActivity {
                     if (document.exists()) {
                         Map<String, Object> drugPlannerList = document.getData();
                         Map<String, Object> dDListSorted = new TreeMap<>(drugPlannerList);
-                        positionsArray = new String[customElements.size()];
+                        positionsArray = new String[drugPlannerList.size()];
                         int i = 0;
                         for (Map.Entry<String, Object> entry : dDListSorted.entrySet()) {
                             positionsArray[i] = entry.getKey();
                             i++;
+                            System.out.println(positionsArray[i]+entry.getValue());
 
                         }
+
                     }
                 } else {
                 }

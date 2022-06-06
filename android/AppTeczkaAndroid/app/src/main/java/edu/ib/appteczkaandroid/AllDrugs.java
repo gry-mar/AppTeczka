@@ -55,6 +55,7 @@ public class AllDrugs extends AppCompatActivity {
     private int drugId;
 
     String[] keys1;
+    String idForDailyDrug;
 
     private FirebaseAuth mAuth;
 
@@ -259,6 +260,39 @@ public class AllDrugs extends AppCompatActivity {
                             Toast.makeText(AllDrugs.this, "Wystąpił błąd. Proszę spróbować ponownie.", Toast.LENGTH_SHORT).show();
                         }
                         if(task.isComplete()){
+                            db.collection(String.valueOf(emailUser)).document("lekiNaDzien")
+                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @SuppressLint("NewApi")
+                                @RequiresApi(api = Build.VERSION_CODES.N)
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        // Document found in the offline cache
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            Map<String, Object> drugDailyList = document.getData();
+                                            Map<String, Object> dAListSorted = new TreeMap<>(drugDailyList);
+                                            //keys = new String[size()];
+                                            //int i = 0;
+                                            for (Map.Entry<String, Object> entry : dAListSorted.entrySet()) {
+                                                Object race = entry.getValue();
+                                                Gson gson = new Gson();
+                                                DrugDosaged drugDos = gson.fromJson(String.valueOf(race), DrugDosaged.class);
+                                                if(drugDos.getId().equals(keys[rowId])){
+                                                    idForDailyDrug = drugDos.getId();
+                                                }
+
+                                                //drugsInAll.add(drugInAll);
+                                                //keys[i] = entry.getKey();
+                                                //i++;
+
+                                            }
+                                            //System.out.println("Leki wszystkie:" + drugsInAll);
+                                        }
+                                    } else {
+                                       // Toast.makeText(AllDrugs.this, "Wystąpił błąd. Proszę spróbować ponownie.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }});
                             deleteDrug.put(String.valueOf(keys[rowId]), FieldValue.delete());
                             System.out.println(keys[rowId]);
                             FirebaseFirestore.getInstance()
@@ -266,7 +300,7 @@ public class AllDrugs extends AppCompatActivity {
                                     .document("lekiWszystkie")
                                     .update(deleteDrug);
 
-                            deleteDrug2.put(String.valueOf(keys[rowId]), FieldValue.delete());
+                            deleteDrug2.put(String.valueOf(rowId), FieldValue.delete());
                             FirebaseFirestore.getInstance()
                                     .collection(String.valueOf(emailUser))
                                     .document("lekiNaDzien")
