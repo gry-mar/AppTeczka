@@ -90,20 +90,17 @@ public class PlannerCustomAdapter extends BaseAdapter implements ListAdapter {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 Map<String, Object> data = new HashMap<>();
-                data.put(String.valueOf(position), b);
+                data.put(String.valueOf(position), new CustomListElement(customElements.get(position).getName(),
+                        customElements.get(position).getTime(), b));
                 System.out.println("POZYCJA PRZY ADAPTERZE: " + position);
                 //btn.setChecked(b);
                 System.out.println("W adapterze przy kliknięciu: " + data.toString());
-                db.collection(String.valueOf(emailUser)).document("togglebuttons")
+                db.collection(String.valueOf(emailUser)).document("lekiPlanner")
                         .set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful())
-
                             System.out.println("Co idzie do togglebuttons: " + data);
-                        Intent intent = new Intent("custom-message");
-                        intent.putExtra("switchPositions", position);
-                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
                     }
                 });

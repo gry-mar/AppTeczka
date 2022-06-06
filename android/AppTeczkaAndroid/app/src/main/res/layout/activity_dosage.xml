@@ -39,7 +39,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnReturn"
         app:layout_constraintTop_toBottomOf="@+id/nazwaLekuDawkowanie"
-        app:layout_constraintVertical_bias="0.938" />
+        app:layout_constraintVertical_bias="0.565" />
 
     <EditText
         android:id="@+id/etDosaged"

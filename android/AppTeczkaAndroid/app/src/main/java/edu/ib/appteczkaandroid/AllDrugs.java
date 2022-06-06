@@ -279,7 +279,9 @@ public class AllDrugs extends AppCompatActivity {
                                                 Gson gson = new Gson();
                                                 DrugDosaged drugDos = gson.fromJson(String.valueOf(race), DrugDosaged.class);
                                                 if(drugDos.getId().equals(keys[rowId])){
-                                                    idForDailyDrug = drugDos.getId();
+                                                    idForDailyDrug = entry.getKey();
+                                                    System.out.println("ID WCZESNIEJ: " + idForDailyDrug);
+                                                    System.out.println("Jaki to lek: " + drugDos.toString());
                                                 }
 
                                                 //drugsInAll.add(drugInAll);
@@ -292,29 +294,33 @@ public class AllDrugs extends AppCompatActivity {
                                     } else {
                                        // Toast.makeText(AllDrugs.this, "Wystąpił błąd. Proszę spróbować ponownie.", Toast.LENGTH_SHORT).show();
                                     }
+                                    if(task.isComplete()){
+                                        deleteDrug.put(String.valueOf(keys[rowId]), FieldValue.delete());
+                                        FirebaseFirestore.getInstance()
+                                                .collection(String.valueOf(emailUser))
+                                                .document("lekiWszystkie")
+                                                .update(deleteDrug);
+
+                                        deleteDrug2.put(String.valueOf(idForDailyDrug), FieldValue.delete());
+                                        FirebaseFirestore.getInstance()
+                                                .collection(String.valueOf(emailUser))
+                                                .document("lekiNaDzien")
+                                                .update(deleteDrug2);
+
+                                        //db.collection(String.valueOf(emailUser)).document("togglebuttons").delete();
+
+                                        Intent intent = new Intent(getApplicationContext(), AllDrugs.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish();
+
+                                        chosenName = "name";
+                                        drugsInAll.remove(deleteDrug);
+                                    }
                                 }});
-                            deleteDrug.put(String.valueOf(keys[rowId]), FieldValue.delete());
-                            System.out.println(keys[rowId]);
-                            FirebaseFirestore.getInstance()
-                                    .collection(String.valueOf(emailUser))
-                                    .document("lekiWszystkie")
-                                    .update(deleteDrug);
 
-                            deleteDrug2.put(String.valueOf(rowId), FieldValue.delete());
-                            FirebaseFirestore.getInstance()
-                                    .collection(String.valueOf(emailUser))
-                                    .document("lekiNaDzien")
-                                    .update(deleteDrug2);
+                            System.out.println("ID FOR DAILY DRUG: " + idForDailyDrug);
 
-                            //db.collection(String.valueOf(emailUser)).document("togglebuttons").delete();
-
-                            Intent intent = new Intent(getApplicationContext(), AllDrugs.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
-
-                            chosenName = "name";
-                            drugsInAll.remove(deleteDrug);
                         }
                     }});
 

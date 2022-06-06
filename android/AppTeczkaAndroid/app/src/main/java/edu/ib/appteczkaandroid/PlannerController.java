@@ -32,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firestore.v1.WriteResult;
 import com.google.gson.Gson;
+import com.google.type.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,9 +52,11 @@ public class PlannerController extends AppCompatActivity {
     private ListView listview;
     private final ArrayList<DrugDosaged> drugsDosaged = new ArrayList<>();
     private PlannerCustomAdapter plannerCustomAdapter;
-    private Map<String, Object> data = new HashMap<>();
+    private Map<String, Object> data;
+    private Map<String, Object> dataSorted;
     private ArrayList<CustomListElement> customElements = new ArrayList<>();
     private int position = 0;
+    private ArrayList<CustomListElement> customElementsTemp = new ArrayList<>();
 
     private String emailUser;
 
@@ -107,14 +110,15 @@ public class PlannerController extends AppCompatActivity {
                                 drugsDosaged.add(drugDosaged);
 
                             }
-                        calculateTime();
+                        System.out.println("DRUGI DOSAGOWANE XD: " + drugsDosaged);
+                        getPreviousPlanner();
                     }
                     } else {
                     }
             }
         });
     }
-    @Override
+   /* @Override
     protected void onResume() {
         super.onResume();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
@@ -122,27 +126,67 @@ public class PlannerController extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int today = calendar.get(Calendar.DAY_OF_YEAR);
 
-        if (today != lastTimeStarted) {
-            db.collection(String.valueOf(emailUser)).document("togglebuttons").delete();
+        //if (today != lastTimeStarted) {
+        //    db.collection(String.valueOf(emailUser)).document("togglebuttons").delete();
 
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("last_time_started", today);
             editor.apply();
         }
+    */
+
+    private void getPreviousPlanner(){
+        DocumentReference docRef2 = db.collection(String.valueOf(emailUser)).document("lekiPlanner");
+        docRef2.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("NewApi")
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> drugPlannerList = document.getData();
+                        if (drugPlannerList == null || drugPlannerList.isEmpty()) {
+                            System.out.println("PUSTAAAAAAAAAAAAAAAAAAAAA");
+                        } else {
+                            Map<String, Object> dPListSorted = new TreeMap<>(drugPlannerList);
+                            for (Map.Entry<String, Object> entry : dPListSorted.entrySet()) {
+                                Object planner = entry.getValue();
+                                Gson gson = new Gson();
+                                String planner2 = planner.toString().replace(":", "");
+                                CustomListElement customListElement =
+                                        gson.fromJson(String.valueOf(planner2), CustomListElement.class);
+                                customListElement.setTime(customListElement.getTime().replace("00", ":00"));
+                                customElementsTemp.add(customListElement);
+                                System.out.println("NAZWANY PRINT:" + customElementsTemp.toString());
+                            }
+                        }
+                    }
+                } else {
+                }
+                if(task.isComplete())
+                    calculateTime();
+            }
+        });
     }
 
 
     public void calculateTime() {
         int n = 0;
         int dosagedSize = drugsDosaged.size();
+        dataSorted = new TreeMap<String,Object>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         for (int i = 0; i < dosagedSize; i++) {
-
             Date current = Calendar.getInstance().getTime();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aaa z");
             String currentDate = simpleDateFormat.format(current.getTime()).substring(0, 10);
+            String lastCharsInCurDate = currentDate.substring(9, 10);
+            System.out.println("OSTATNI CZAR:" + lastCharsInCurDate);
+            int plusDay = Integer.parseInt(lastCharsInCurDate) + 1;
+
             System.out.println(drugsDosaged.get(i).getEndDate().toString());
             System.out.println(currentDate);
+
             if (drugsDosaged.get(i).getEndDate().equals(currentDate)) {
                 Map<String,Object> updates = new HashMap<>();
                 drugsDosaged.remove(i);
@@ -153,13 +197,6 @@ public class PlannerController extends AppCompatActivity {
                         .document("lekiNaDzien")
                         .update(updates);
                 System.out.println("ZAKONCZONE DAWKOWANIE LEKU");
-//                for (int k = 0; k < Integer.parseInt(drugsDosaged.get(i).getDosagesPerDay()); k++) {
-//                    updates.put(String.valueOf(i), FieldValue.delete());
-//                    FirebaseFirestore.getInstance()
-//                            .collection(String.valueOf(emailUser))
-//                            .document("lekiPlanner")
-//                            .update(updates);
-//                }
 
                 } else {
                 int godz = 14 / Integer.parseInt(drugsDosaged.get(i).getDosagesPerDay());
@@ -169,22 +206,34 @@ public class PlannerController extends AppCompatActivity {
                     dosagesTimes.add((8 + godzTemp) + ":" + "00");
 
                     godzTemp += godz;
+                    if(n >= customElementsTemp.size()){
+                        customElements.add(new CustomListElement
+                                (drugsDosaged.get(i).getName(), dosagesTimes.get(j)));
 
+                        dataSorted.put(String.valueOf(n), new CustomListElement
+                                (drugsDosaged.get(i).getName(), dosagesTimes.get(j)));
 
-                    customElements.add(new CustomListElement
-                            (drugsDosaged.get(i).getName(), dosagesTimes.get(j)));
+                    }else if(customElementsTemp.size() != 0){
+                        customElements.add(new CustomListElement
+                                (drugsDosaged.get(i).getName(), dosagesTimes.get(j), customElementsTemp.get(n).isChecked()));
 
-                    data.put(String.valueOf(n), new CustomListElement
-                            (drugsDosaged.get(i).getName(), dosagesTimes.get(j)));
+                        dataSorted.put(String.valueOf(n), new CustomListElement
+                                (drugsDosaged.get(i).getName(), dosagesTimes.get(j), customElementsTemp.get(n).isChecked()));
+                    }
+                    else{
+                        customElements.add(new CustomListElement
+                                (drugsDosaged.get(i).getName(), dosagesTimes.get(j)));
+
+                        dataSorted.put(String.valueOf(n), new CustomListElement
+                                (drugsDosaged.get(i).getName(), dosagesTimes.get(j)));
+                    }
                     n++;
-
+                    System.out.println("DATA PO DODANIU: " + dataSorted.toString());
 
                 }
             }
         }
-        System.out.println("before" + data);
-        Map<String, Object> dataSorted = new TreeMap<String,Object>(data);
-        System.out.println("after" + dataSorted);
+        System.out.println("after" + dataSorted.toString());
         db.collection(String.valueOf(emailUser)).document("lekiPlanner")
                 .set(dataSorted).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -192,15 +241,15 @@ public class PlannerController extends AppCompatActivity {
                 if (task.isSuccessful())
                     Toast.makeText(PlannerController.this, "udalo sie",
                             Toast.LENGTH_SHORT).show();
-                System.out.println("CO FINALNIE WCHODZI DO BAZY: " + data);
+                System.out.println("CO FINALNIE WCHODZI DO BAZY: " + dataSorted);
                 if (task.isComplete())
                     //getPositionFromLekiPlanner();
-                    toggleButtonsGet();
+                    setDrugsPlanner();
             }
         });
     }
 
-
+/*
         private void toggleButtonsGet() {
             DocumentReference docRef = db.collection(String.valueOf(emailUser))
                     .document("togglebuttons");
@@ -244,7 +293,7 @@ public class PlannerController extends AppCompatActivity {
                 }
             });
         }
-
+*/
         private void setDrugsPlanner() {
             customElements.clear();
 
@@ -282,7 +331,7 @@ public class PlannerController extends AppCompatActivity {
                 }
             });
         }
-
+/*
     public void getPositionFromLekiPlanner(){
         DocumentReference docRef = db.collection(String.valueOf(emailUser))
                 .document("lekiPlanner");
@@ -313,7 +362,7 @@ public class PlannerController extends AppCompatActivity {
             }
         });
     }
-
+*/
         private void setAdapter(){
         plannerCustomAdapter = new PlannerCustomAdapter(customElements, PlannerController.this);
 
