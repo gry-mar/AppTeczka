@@ -177,12 +177,14 @@ public class PlannerController extends AppCompatActivity {
         dataSorted = new TreeMap<String,Object>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         for (int i = 0; i < dosagedSize; i++) {
-            Date current = Calendar.getInstance().getTime();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aaa z");
-            String currentDate = simpleDateFormat.format(current.getTime()).substring(0, 10);
-            String lastCharsInCurDate = currentDate.substring(9, 10);
-            System.out.println("OSTATNI CZAR:" + lastCharsInCurDate);
-            int plusDay = Integer.parseInt(lastCharsInCurDate) + 1;
+            Calendar current = Calendar.getInstance();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            //String currentDate = simpleDateFormat.format(current.getTime()).substring(0, 10);
+            //String lastCharsInCurDate = currentDate.substring(9, 10);
+            //System.out.println("OSTATNI CZAR:" + lastCharsInCurDate);
+            //int plusDay = Integer.parseInt(lastCharsInCurDate) + 1;
+            current.add(Calendar.DATE, 1);
+            String currentDate = simpleDateFormat.format(current.getTime());
 
             System.out.println(drugsDosaged.get(i).getEndDate().toString());
             System.out.println(currentDate);
@@ -228,7 +230,6 @@ public class PlannerController extends AppCompatActivity {
                                 (drugsDosaged.get(i).getName(), dosagesTimes.get(j)));
                     }
                     n++;
-                    System.out.println("DATA PO DODANIU: " + dataSorted.toString());
 
                 }
             }
@@ -239,9 +240,7 @@ public class PlannerController extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful())
-                    Toast.makeText(PlannerController.this, "udalo sie",
-                            Toast.LENGTH_SHORT).show();
-                System.out.println("CO FINALNIE WCHODZI DO BAZY: " + dataSorted);
+
                 if (task.isComplete())
                     //getPositionFromLekiPlanner();
                     setDrugsPlanner();
@@ -320,7 +319,6 @@ public class PlannerController extends AppCompatActivity {
                                             gson.fromJson(String.valueOf(planner2), CustomListElement.class);
                                     customListElement.setTime(customListElement.getTime().replace("00", ":00"));
                                     customElements.add(customListElement);
-                                    System.out.println(customListElement);
                                 }
                             }
                         }

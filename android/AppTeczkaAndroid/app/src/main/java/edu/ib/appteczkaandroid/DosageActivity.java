@@ -109,27 +109,29 @@ public class DosageActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Document found in the offline cache
                                 DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    Map<String, Object> drugDosageList = document.getData();
-                                    Map<String, Object> listSorted = new TreeMap<>(drugDosageList);
-                                    keys = new String[drugDosageList.size()];
-                                    int i = 0;
-                                    for (Map.Entry<String, Object> entry : listSorted.entrySet()) {
-                                        keys[i] = entry.getKey();
-                                        i++;
-                                    }
-
-                                    max = Integer.parseInt(keys[0]);
-                                    for (int j = 1; j < keys.length; j++) {
-                                        int temp = Integer.parseInt(keys[j]);
-                                        if (Integer.parseInt(keys[j]) > max) {
-                                            max = temp;
+                                if (document != null) {
+                                    if (document.exists()) {
+                                        Map<String, Object> drugDosageList = document.getData();
+                                        Map<String, Object> listSorted = new TreeMap<>(drugDosageList);
+                                        keys = new String[drugDosageList.size()];
+                                        int i = 0;
+                                        for (Map.Entry<String, Object> entry : listSorted.entrySet()) {
+                                            keys[i] = entry.getKey();
+                                            i++;
                                         }
+
+                                        max = Integer.parseInt(keys[0]);
+                                        for (int j = 1; j < keys.length; j++) {
+                                            int temp = Integer.parseInt(keys[j]);
+                                            if (Integer.parseInt(keys[j]) > max) {
+                                                max = temp;
+                                            }
+                                        }
+                                        max += 1;
+
+
+                                        System.out.println("MAKSYMALNA WARTOSC: " + max);
                                     }
-                                    max += 1;
-
-
-                                    System.out.println("MAKSYMALNA WARTOSC: " + max);
                                 }
                             }
                             if(task.isComplete())

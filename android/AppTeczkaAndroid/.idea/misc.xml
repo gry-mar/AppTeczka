@@ -3,18 +3,30 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/drawable/cell_shape.xml" value="0.34" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/drawable/cell_shape_clicked.xml" value="0.246" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/drawable/cell_shape_clicked2.xml" value="0.246" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/drawable/date_add_to_all.xml" value="0.34" />
         <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/drawable/login_email.xml" value="0.2495" />
         <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/drawable/login_password.xml" value="0.2495" />
         <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/drawable/login_person.xml" value="0.2495" />
-        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_add_drug_to_all.xml" value="0.3875" />
-        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_all_drugs.xml" value="0.3875" />
-        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_compare_two.xml" value="0.3875" />
-        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_interactions.xml" value="0.3875" />
-        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_login.xml" value="0.3875" />
-        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_main.xml" value="0.3875" />
-        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_planner.xml" value="0.3875" />
-        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_registration.xml" value="0.3875" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/drawable/name_add_to_all.xml" value="0.2965" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/drawable/toggle_button_custom.xml" value="0.34" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_add_drug_to_all.xml" value="0.22" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_all_drugs.xml" value="0.25" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_compare_all.xml" value="0.25" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_compare_two.xml" value="0.25" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_dosage.xml" value="0.25" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_interactions.xml" value="0.22" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_learning_panel.xml" value="0.2" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_login.xml" value="0.22" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_menu_all.xml" value="0.22" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_planner.xml" value="0.33" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_registration.xml" value="0.2" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_set_reminder.xml" value="0.22" />
         <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/custom_listview.xml" value="0.3875" />
+        <entry key="..\:/IdeaProjects/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/test.xml" value="0.3875" />
         <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/drawable/login_email.xml" value="0.40625" />
         <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/drawable/login_password.xml" value="0.40625" />
         <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/drawable/toggle_button_custom.xml" value="0.35833333333333334" />
@@ -27,20 +39,18 @@
         <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_learning_panel.xml" value="0.4390625" />
         <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_login.xml" value="0.42391304347826086" />
         <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_main.xml" value="0.2692502532928065" />
-        <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_menu_all.xml" value="0.2777777777777778" />
+        <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_menu_all.xml" value="0.4379528985507246" />
         <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_planner.xml" value="0.2078804347826087" />
         <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_registration.xml" value="0.42391304347826086" />
-        <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_set_reminder.xml" value="0.5" />
         <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/layout/custom_listview.xml" value="0.2695035460992908" />
         <entry key="..\:/SEMESTR VI/IO/AppTeczka/android/AppTeczkaAndroid/app/src/main/res/menu/activity_main_drawer.xml" value="0.39010416666666664" />
-        <entry key="..\:/Users/NATALIA/Desktop/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_add_drug_to_all.xml" value="0.13333333333333333" />
-        <entry key="..\:/Users/NATALIA/Desktop/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_dosage.xml" value="0.13333333333333333" />
         <entry key="..\:/Users/NATALIA/Desktop/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_login.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/NATALIA/Desktop/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_main.xml" value="0.1421875" />
         <entry key="..\:/Users/NATALIA/Desktop/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_menu_all.xml" value="0.1421875" />
         <entry key="..\:/Users/NATALIA/Desktop/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_planner.xml" value="0.11666666666666667" />
         <entry key="..\:/Users/NATALIA/Desktop/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_registration.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/NATALIA/Desktop/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/custom_listview.xml" value="0.22" />
+        <entry key="..\:/appteczka/android/AppTeczkaAndroid/app/src/main/res/layout/activity_dosage.xml" value="0.16621376811594202" />
       </map>
     </option>
   </component>

@@ -29,6 +29,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firestore.v1.WriteResult;
+import com.google.gson.Gson;
 
 import java.sql.Array;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class CompareAllActivity extends AppCompatActivity {
 
@@ -48,7 +50,8 @@ public class CompareAllActivity extends AppCompatActivity {
     int undefined = 0;
     protected ArrayAdapter<String> drugListAdapter;
     ListView listView;
-
+    String[] names;
+    ArrayList<DrugInAll> drugsInAll = new ArrayList<>();
     private String emailUser;
 
     private FirebaseAuth mAuth;
@@ -70,7 +73,7 @@ public class CompareAllActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_compare_all);
         service = new RxNormService(this);
-        getData();
+        //getData();
         System.out.println(drugNames.toString());
         drugCount = drugNames.size();
         System.out.println(drugCount);
@@ -126,8 +129,26 @@ public class CompareAllActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            System.out.println(document.getData());
-                            Map<String, Object> drugInAllList =  document.getData();
+                            //System.out.println(document.getData());
+                            //Map<String, Object> drugInAllList =  document.getData();
+                            Map<String, Object> drugInAllList = document.getData();
+                            Map<String, Object> dAListSorted = new TreeMap<>(drugInAllList);
+                            names = new String[drugInAllList.size()];
+                            int i = 0;
+                            for (Map.Entry<String, Object> entry : dAListSorted.entrySet()) {
+                                Object race = entry.getValue();
+                                Gson gson = new Gson();
+                                DrugInAll drugInAll = gson.fromJson(String.valueOf(race), DrugInAll.class);
+
+                                //drugsInAll.add(drugInAll);
+                                //names[i] = drugInAll.getName();
+                                System.out.println(names.toString());
+                                drugNames.add(drugInAll.getName());
+                                System.out.println("DRUGNAMES"+drugNames.toString());
+                                i++;
+
+                            }
+                            /*
                             for(String k : drugInAllList.keySet()){
                                 drugNames.add(k);
                                 System.out.println(k.toString());
@@ -137,26 +158,31 @@ public class CompareAllActivity extends AppCompatActivity {
                             System.out.println(drugNames.toString());
 
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            */
+
                         } else {
                             Log.d(TAG, "No such document");
                         }
                     } else {
                         Log.d(TAG, "get failed with ", task.getException());
-                    }
+                    }if(task.isComplete())
+                        reszta();
                 }
             });
         }
 
     public void onCompareClicked(View view) {
+        getData();}
+        private void reszta(){
       System.out.println(drugNames.toString());
         drugCount = drugNames.size();
-        if(drugIdList.size() <2){
-            Toast.makeText(this, "Nie znaleziono żadnych leków do porównania interakcji, zachęcamy do zakupu Premium", Toast.LENGTH_LONG).show();
-        }else {
+//        if(drugIdList.size() <2){
+//            Toast.makeText(this, "Nie znaleziono żadnych leków do porównania interakcji, zachęcamy do zakupu Premium", Toast.LENGTH_LONG).show();
+//        }else {
             for (int i = 0; i < drugCount; i++) {
                 service.getDrugsId(drugNames.get(i), this, this::onDrugIdGet, i);
             }
-        }
+        //}
     }
 
     private void setupList(){
